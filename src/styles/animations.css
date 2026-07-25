@@ -1,0 +1,15 @@
+/* Premium text outline helper for warm light theme */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(24, 24, 27, 0.2);
+  transition: -webkit-text-stroke 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.text-outline:hover {
+  -webkit-text-stroke: 1px var(--color-accent);
+}
+
+/* Micro-interaction transitions */
+.transition-smooth {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}

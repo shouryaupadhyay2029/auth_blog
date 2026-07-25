@@ -1,0 +1,117 @@
+/* Reusable Layout Utilities using @utility */
+@utility page-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+}
+
+@utility content-container {
+  max-width: 80rem; /* 1280px */
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding-left: var(--spacing-24);
+  padding-right: var(--spacing-24);
+  @media (min-width: 768px) {
+    padding-left: var(--spacing-32);
+    padding-right: var(--spacing-32);
+  }
+}
+
+@utility section-container {
+  position: relative;
+  width: 100%;
+}
+
+@utility section-spacing {
+  padding-top: var(--spacing-64);
+  padding-bottom: var(--spacing-64);
+  @media (min-width: 768px) {
+    padding-top: var(--spacing-96);
+    padding-bottom: var(--spacing-96);
+  }
+}
+
+@utility stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap, var(--spacing-16));
+}
+
+@utility cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cluster-gap, var(--spacing-12));
+}
+
+@utility surface {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+/* Premium Noise Grain Layer colorized to Emerald Green (#10B981) */
+.noise-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PScwIDAgMjAwIDIwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZmlsdGVyIGlkPSdub2lzZUZpbHRlcic+PGZlVHVyYnVsZW5jZSB0eXBlPSdmcmFjdGFsTm9pc2UnIGJhc2VGcmVxdWVuY3k9JzAuNjUnIG51bU9jdGF2ZXM9JzMnIHN0aXRjaFRpbGVzPSdzdGl0Y2gnIHJlc3VsdD0nbm9pc2UnLz48ZmVDb2xvck1hdHJpeCB0eXBlPSdtYXRyaXgnIHZhbHVlcz0nMC4wNjI3IDAgMCAwIDAgIDAgMC43MjU1IDAgMCAwICAwIDAgMC41MDU4IDAgMCAgMCAwIDAgMSAwJyBpbj0nbm9pc2UnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjbm9pc2VGaWx0ZXIpJy8+PC9zdmc+') repeat;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.045;
+}
+
+/* Grid background styling for charcoal dark theme */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(244, 244, 245, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(244, 244, 245, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center top;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grid-bg-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Interactive premium link styles */
+@utility hover-link {
+  position: relative;
+  display: inline-block;
+  color: var(--color-text-secondary);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-accent);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
