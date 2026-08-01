@@ -1,0 +1,520 @@
+/* BlogAuth V1 cards.css — Sprint 9: Architectural Interactive Editorial Cards */
+/*
+ * ARCHIVE CARD SYSTEM — Single unified card language.
+ * Applied to: .featured-card, .featured-large-card, .featured-small-card,
+ *             .latest-feature-card, .latest-standard-card, .latest-compact-card
+ *
+ * Signature shape: top-right chamfer (architectural document corner)
+ * Paper depth:     ::before pseudo-element — stacked sheet offset
+ * Tilt physics:    CSS custom props --rx / --ry set by cards.js
+ * Easing:          --ease-out-expo from micro.css (0.22, 1, 0.36, 1)
+ */
+
+/* ─────────────────────────────────────────────────────────────────
+   TOKENS — Card-level design decisions
+───────────────────────────────────────────────────────────────── */
+:root {
+  /* Chamfer size: how large the notch cut is */
+  --chamfer: 18px;
+  /* Stack offset: how far each paper layer peeks out */
+  --stack-offset: 3px;
+  /* Tilt perspective */
+  --card-perspective: 800px;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   1. ARCHIVE CARD BASE
+   The chamfer clip-path is the universal card silhouette.
+   Applied to every card type on the site.
+───────────────────────────────────────────────────────────────── */
+
+/* The universal chamfer shape — top-right corner notched */
+.featured-card,
+.featured-large-card,
+.featured-small-card,
+.latest-feature-card,
+.latest-standard-card,
+.latest-compact-card {
+  /* Chamfer: full rect minus top-right triangle */
+  clip-path: polygon(
+    0% 0%,
+    calc(100% - var(--chamfer)) 0%,
+    100% var(--chamfer),
+    100% 100%,
+    0% 100%
+  );
+
+  /* Remove border-radius — the clip-path defines the silhouette */
+  border-radius: 0 !important;
+
+  /* 3D perspective context for tilt */
+  transform-style: preserve-3d;
+
+  /* Tilt interpolation: CSS picks up --rx / --ry set by JS */
+  --rx: 0deg;
+  --ry: 0deg;
+
+  /* Unified transition — overrides prior scattered transitions */
+  transition:
+    transform var(--dur-md) var(--ease-out-expo),
+    border-color var(--dur-md) var(--ease-out-expo),
+    box-shadow var(--dur-md) var(--ease-out-expo),
+    clip-path var(--dur-md) var(--ease-out-expo) !important;
+
+  will-change: transform;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   2. PAPER STACK DEPTH
+   ::before creates a second sheet peeking behind the card.
+   This replaces the accent-line ::before from featured.css and latest.css.
+   The stacking effect is purely visual — no extra DOM nodes.
+───────────────────────────────────────────────────────────────── */
+
+/*
+ * NOTE ON PSEUDO-ELEMENT STRATEGY:
+ * ::before  → Paper stack sheet (visible as a slight offset behind the card)
+ * ::after   → Accent trace (the emerald line / border highlight on hover)
+ *
+ * We need `overflow: visible` on the card for the stack to show.
+ * Cards previously had overflow: hidden for the accent line — we move
+ * the accent to ::after which doesn't need overflow hidden.
+ */
+
+.featured-card,
+.featured-large-card,
+.featured-small-card,
+.latest-feature-card,
+.latest-standard-card,
+.latest-compact-card {
+  overflow: visible !important; /* Paper stack needs to peek out */
+  position: relative;
+}
+
+/* Paper sheet layer — sits behind the card, offset down and right */
+.featured-card::before,
+.featured-large-card::before,
+.featured-small-card::before,
+.latest-feature-card::before,
+.latest-standard-card::before,
+.latest-compact-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Stack peeks: offset downward */
+  transform: translate(var(--stack-offset), var(--stack-offset));
+  background-color: var(--surface-2);
+  /* Same chamfer silhouette */
+  clip-path: polygon(
+    0% 0%,
+    calc(100% - var(--chamfer)) 0%,
+    100% var(--chamfer),
+    100% 100%,
+    0% 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  z-index: -1;
+  pointer-events: none;
+  /* Stack compresses on hover: transitions to 1px offset */
+  transition:
+    transform var(--dur-md) var(--ease-out-expo),
+    opacity var(--dur-md) var(--ease-out-expo);
+  opacity: 0.7;
+  will-change: transform;
+}
+
+/* Second, fainter sheet — simulates 2 layers of depth */
+/* Using box-shadow on the card to simulate third sheet instead of another pseudo */
+.featured-large-card,
+.latest-feature-card {
+  box-shadow:
+    /* Third sheet shadow */
+    calc(var(--stack-offset) * 2) calc(var(--stack-offset) * 2) 0 0 rgba(255,255,255,0.015),
+    /* Ambient depth shadow */
+    0 8px 32px -8px rgba(0, 0, 0, 0.5),
+    0 2px 8px -2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.featured-small-card,
+.latest-standard-card,
+.latest-compact-card,
+.featured-card {
+  box-shadow:
+    calc(var(--stack-offset) * 2) calc(var(--stack-offset) * 2) 0 0 rgba(255,255,255,0.012),
+    0 4px 16px -4px rgba(0, 0, 0, 0.4),
+    0 2px 6px -2px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   3. CHAMFER FOLD INDICATOR
+   A thin diagonal line at the corner notch, like a folded page.
+   Applied with ::after on a wrapper — but since we use ::after
+   for accent, we simulate it with a gradient in ::before instead.
+───────────────────────────────────────────────────────────────── */
+
+/* The chamfer fold is implied by the cut — no extra element needed.
+   The surface-2 background of ::before peeks through the cut,
+   creating the natural fold shadow. */
+
+/* ─────────────────────────────────────────────────────────────────
+   4. ARCHIVAL CATEGORY TABS
+   Replace generic category text with a physically-attached tab style.
+   The tab appears clipped into the card edge — architectural, not pill.
+───────────────────────────────────────────────────────────────── */
+
+/* Featured section category tab */
+.featured-large-card .card-category,
+.featured-small-card .card-category,
+.card-category {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  /* Archival tab: left border acts as a physical tab edge */
+  padding: 3px 8px 3px 6px;
+  border-left: 2px solid var(--accent);
+  background-color: rgba(16, 185, 129, 0.06);
+  /* Sharp corners — no border-radius on this element */
+  border-radius: 0;
+  transition:
+    background-color var(--dur-sm) var(--ease-out-expo),
+    border-color var(--dur-sm) var(--ease-out-expo),
+    color var(--dur-sm) var(--ease-out-expo);
+}
+
+/* Latest section category tabs */
+.lfc-category,
+.lsc-category,
+.lcc-category {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 3px 8px 3px 6px;
+  border-left: 2px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 0;
+  transition:
+    background-color var(--dur-sm) var(--ease-out-expo),
+    border-color var(--dur-sm) var(--ease-out-expo),
+    color var(--dur-sm) var(--ease-out-expo);
+}
+
+/* On hover: tab sharpens to accent */
+.featured-large-card:hover .card-category,
+.featured-small-card:hover .card-category,
+.latest-feature-card:hover .lfc-category,
+.latest-standard-card:hover .lsc-category,
+.latest-compact-card:hover .lcc-category,
+.featured-card:hover .card-category {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background-color: rgba(16, 185, 129, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   5. HOVER SEQUENCE — Staggered via CSS transitions with delays
+   Sequence:
+   0ms   border begins tracing / card lifts + perspective tilt
+   60ms  paper stack compresses
+   80ms  category tab settles
+   100ms arrow slides
+   Full border trace completes at 380ms
+───────────────────────────────────────────────────────────────── */
+
+/* Hover lift + tilt (JS provides --rx / --ry for tilt) */
+.featured-card:hover,
+.featured-large-card:hover,
+.featured-small-card:hover,
+.latest-feature-card:hover,
+.latest-standard-card:hover,
+.latest-compact-card:hover {
+  transform:
+    perspective(var(--card-perspective))
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg))
+    translateY(-4px)
+    scale(1.01) !important;
+}
+
+/* Paper stack compresses on hover — sheets slide into alignment */
+.featured-card:hover::before,
+.featured-large-card:hover::before,
+.featured-small-card:hover::before,
+.latest-feature-card:hover::before,
+.latest-standard-card:hover::before,
+.latest-compact-card:hover::before {
+  transform: translate(1px, 1px);
+  opacity: 0.45;
+  transition-delay: 60ms; /* Slightly after lift */
+}
+
+/* Large card hover shadows */
+.featured-large-card:hover,
+.latest-feature-card:hover {
+  box-shadow:
+    1px 1px 0 0 rgba(255,255,255,0.01),
+    0 20px 60px -12px rgba(0, 0, 0, 0.65),
+    0 8px 24px -4px rgba(0, 0, 0, 0.4) !important;
+}
+
+.featured-small-card:hover,
+.latest-standard-card:hover,
+.latest-compact-card:hover,
+.featured-card:hover {
+  box-shadow:
+    1px 1px 0 0 rgba(255,255,255,0.01),
+    0 12px 36px -8px rgba(0, 0, 0, 0.55),
+    0 4px 12px -2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   6. ACCENT LINE — ::after (Replaces ::before which is now paper stack)
+   The emerald line traces across the top on hover.
+   Uses scaleX instead of width — compositor-only.
+───────────────────────────────────────────────────────────────── */
+
+/* Clip-path on the card means ::after can't exceed card bounds
+   in the traditional sense. We use a top-inset accent instead.  */
+.featured-card::after,
+.featured-large-card::after,
+.featured-small-card::after,
+.latest-feature-card::after,
+.latest-standard-card::after,
+.latest-compact-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Stop before the chamfer notch */
+  right: var(--chamfer);
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0%, rgba(16, 185, 129, 0.6) 100%);
+  transform-origin: left center;
+  transform: scaleX(0);
+  pointer-events: none;
+  z-index: 2;
+  transition: transform 380ms var(--ease-out-expo);
+}
+
+.featured-card:hover::after,
+.featured-large-card:hover::after,
+.featured-small-card:hover::after,
+.latest-feature-card:hover::after,
+.latest-standard-card:hover::after,
+.latest-compact-card:hover::after {
+  transform: scaleX(1);
+  /* Accent line appears slightly after lift — 40ms delay */
+  transition-delay: 40ms;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   7. ARROW / CTA INTERACTION
+   Arrow slides 4–6px. Text brightens.
+───────────────────────────────────────────────────────────────── */
+
+/* All arrow spans across every card type */
+.featured-card .card-link span,
+.featured-large-card .card-link span,
+.featured-small-card .card-link span,
+.lfc-read-link .link-arrow,
+.lsc-read-link .link-arrow,
+.lcc-link .link-arrow,
+.latest-archive-btn .link-arrow,
+.archive-link .archive-arrow {
+  display: inline-block;
+  transition: transform var(--dur-sm) var(--ease-out-expo);
+  /* Arrow delay: after card lift settles */
+  transition-delay: 80ms;
+}
+
+/* Arrow slide — trigger on the card hover, not the link hover */
+.featured-card:hover .card-link span,
+.featured-large-card:hover .card-link span,
+.featured-small-card:hover .card-link span,
+.latest-feature-card:hover .lfc-read-link .link-arrow,
+.latest-standard-card:hover .lsc-read-link .link-arrow,
+.latest-compact-card:hover .lcc-link .link-arrow {
+  transform: translateX(5px);
+}
+
+/* Standalone link hovers */
+.latest-archive-btn:hover .link-arrow,
+.archive-link:hover .archive-arrow {
+  transform: translateX(4px);
+}
+
+/* CTA text brightening */
+.featured-card:hover .card-link,
+.featured-large-card:hover .card-link,
+.lfc-read-link,
+.lsc-read-link {
+  transition: color var(--dur-sm) var(--ease-out-expo);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   8. BORDER BRIGHTENING — Architectural border treatment
+   Base border is very subtle. On hover it brightens progressively
+   via the ::after trace. The base border itself also brightens.
+───────────────────────────────────────────────────────────────── */
+
+/* Base border for all cards */
+.featured-card,
+.featured-large-card,
+.featured-small-card {
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.latest-feature-card,
+.latest-standard-card,
+.latest-compact-card {
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Hover border brightens */
+.featured-card:hover,
+.featured-large-card:hover,
+.featured-small-card:hover,
+.latest-feature-card:hover,
+.latest-standard-card:hover,
+.latest-compact-card:hover {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   9. PROXIMITY EFFECT — Updated for new card system
+   Works with micro.css's .m-proximity class.
+───────────────────────────────────────────────────────────────── */
+.m-proximity.featured-large-card,
+.m-proximity.featured-small-card,
+.m-proximity.latest-feature-card,
+.m-proximity.latest-standard-card,
+.m-proximity.latest-compact-card,
+.m-proximity.featured-card {
+  transform: perspective(var(--card-perspective)) translateY(-1px) !important;
+  border-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   10. COMPACT CARD — Smaller chamfer to match proportion
+───────────────────────────────────────────────────────────────── */
+.latest-compact-card {
+  --chamfer: 12px; /* Smaller notch on compact cards */
+}
+
+.latest-compact-card::before {
+  clip-path: polygon(
+    0% 0%,
+    calc(100% - 12px) 0%,
+    100% 12px,
+    100% 100%,
+    0% 100%
+  );
+}
+
+.latest-compact-card::after {
+  right: 12px; /* Match smaller chamfer */
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   11. HERO CARD WRAPPER — Override the translateX entry,
+   now just translateY from micro.css
+───────────────────────────────────────────────────────────────── */
+.featured-card-wrapper {
+  /* Let micro.css handle the entry — no extra state here */
+  transform-style: preserve-3d;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   12. RESPONSIVE — Tilt disabled on touch, chamfer scales down
+───────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Smaller chamfer on mobile */
+  .featured-card,
+  .featured-large-card,
+  .featured-small-card,
+  .latest-feature-card,
+  .latest-standard-card {
+    --chamfer: 14px;
+  }
+
+  .latest-compact-card {
+    --chamfer: 10px;
+  }
+
+  /* Lift only on mobile — no tilt since tilt is disabled by JS on touch */
+  .featured-card:hover,
+  .featured-large-card:hover,
+  .featured-small-card:hover,
+  .latest-feature-card:hover,
+  .latest-standard-card:hover,
+  .latest-compact-card:hover {
+    transform: translateY(-2px) scale(1.005) !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   13. REDUCED MOTION
+───────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  /* No transforms whatsoever */
+  .featured-card,
+  .featured-large-card,
+  .featured-small-card,
+  .latest-feature-card,
+  .latest-standard-card,
+  .latest-compact-card {
+    transition: border-color var(--dur-xs) linear !important;
+    will-change: auto !important;
+  }
+
+  .featured-card:hover,
+  .featured-large-card:hover,
+  .featured-small-card:hover,
+  .latest-feature-card:hover,
+  .latest-standard-card:hover,
+  .latest-compact-card:hover {
+    transform: none !important;
+  }
+
+  /* Paper stack — static */
+  .featured-card::before,
+  .featured-large-card::before,
+  .featured-small-card::before,
+  .latest-feature-card::before,
+  .latest-standard-card::before,
+  .latest-compact-card::before {
+    transition: none !important;
+    transform: translate(var(--stack-offset), var(--stack-offset)) !important;
+  }
+
+  /* Accent line — always visible */
+  .featured-card::after,
+  .featured-large-card::after,
+  .featured-small-card::after,
+  .latest-feature-card::after,
+  .latest-standard-card::after,
+  .latest-compact-card::after {
+    transform: scaleX(1) !important;
+    transition: none !important;
+  }
+
+  /* No arrow slides */
+  .featured-card .card-link span,
+  .featured-large-card .card-link span,
+  .featured-small-card .card-link span,
+  .lfc-read-link .link-arrow,
+  .lsc-read-link .link-arrow,
+  .lcc-link .link-arrow {
+    transition: none !important;
+    transform: none !important;
+  }
+}

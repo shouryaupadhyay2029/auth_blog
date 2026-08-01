@@ -1,0 +1,587 @@
+/* BlogAuth V1 article.css — Sprint 7: Article Detail Page */
+
+/* ─────────────────────────────────────────────────────────────────
+   1. LAYOUT ARCHITECTURE & WHITESPACE
+───────────────────────────────────────────────────────────────── */
+.article-page {
+  padding-top: 140px; /* Leave space for floating navbar */
+  padding-bottom: var(--spacing-128);
+}
+
+.article-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-48);
+  position: relative;
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-24);
+}
+
+/* On desktop, introduce the three-column layout (Table of Contents / Body / Right Sidebar) */
+@media (min-width: 1024px) {
+  .article-container {
+    grid-template-columns: 240px minmax(0, 1fr) 280px;
+    gap: var(--spacing-64);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   2. READING PROGRESS BAR
+───────────────────────────────────────────────────────────────── */
+.reading-progress-container {
+  position: fixed;
+  top: 76px; /* Sits exactly below floating navbar header (around 76px) */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: transparent;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.reading-progress-bar {
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   3. LEFT SIDEBAR (STICKY TABLE OF CONTENTS)
+───────────────────────────────────────────────────────────────── */
+.article-toc-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .article-toc-sidebar {
+    display: block;
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+    padding-right: var(--spacing-16);
+    border-right: 1px solid var(--border);
+  }
+  
+  .toc-title {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-20);
+  }
+  
+  .toc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+  }
+  
+  .toc-link {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    opacity: 0.65;
+    transition: opacity var(--transition-fast), color var(--transition-fast), padding var(--transition-fast);
+    display: block;
+    line-height: 1.4;
+  }
+  
+  .toc-link:hover {
+    color: var(--text-primary);
+    opacity: 1;
+  }
+  
+  .toc-link.active {
+    color: var(--accent);
+    opacity: 1;
+    font-weight: 600;
+    padding-left: var(--spacing-8);
+    border-left: 2px solid var(--accent);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   4. RIGHT SIDEBAR (STICKY AUTHOR & SHARE METADATA)
+───────────────────────────────────────────────────────────────── */
+.article-meta-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .article-meta-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-32);
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+  }
+  
+  .sidebar-author-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    padding: var(--spacing-24);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+  }
+  
+  .sidebar-author-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+  }
+  
+  .sidebar-author-bio {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  
+  .sidebar-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+    padding-top: var(--spacing-16);
+    border-top: 1px solid var(--border);
+  }
+  
+  .sidebar-meta-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+  
+  .sidebar-meta-value {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  
+  .sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+  }
+  
+  .sidebar-share-title {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-4);
+  }
+  
+  .sidebar-share-buttons {
+    display: flex;
+    gap: var(--spacing-8);
+  }
+  
+  .btn-icon-square {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  
+  .btn-icon-square:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background-color: rgba(16, 185, 129, 0.04);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   5. ARTICLE HERO SECTION
+───────────────────────────────────────────────────────────────── */
+.article-header {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto var(--spacing-32) auto;
+  text-align: left;
+}
+
+.article-header-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-24);
+}
+
+.article-header-category {
+  color: var(--accent);
+  border-left: 2px solid var(--accent);
+  padding-left: var(--spacing-8);
+}
+
+.article-header-date {
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.article-header-read-time {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.article-main-title {
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-20);
+}
+
+.article-subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  opacity: 0.9;
+  margin-bottom: var(--spacing-32);
+}
+
+/* Mobile & Tablet Author Info block (hidden on desktop sidebar view) */
+.article-mobile-author-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-20) 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--spacing-24);
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .article-mobile-author-block {
+    display: none; /* Desktop uses the sticky right sidebar author block */
+  }
+}
+
+.mobile-author-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+}
+
+.mobile-author-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-author-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mobile-author-role {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.mobile-share-bookmark {
+  display: flex;
+  gap: var(--spacing-8);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   6. ARTICLE BODY & EDITORIAL TYPOGRAPHY (720px Max Width)
+───────────────────────────────────────────────────────────────── */
+.article-content {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.article-body-p {
+  font-family: var(--font-body);
+  font-size: 1.1875rem; /* ~19px */
+  line-height: 1.8;
+  color: #E4E4E7; /* High contrast premium light gray */
+  margin-bottom: var(--spacing-32);
+}
+
+.article-body-h2 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-top: var(--spacing-64);
+  margin-bottom: var(--spacing-20);
+}
+
+.article-body-h3 {
+  font-size: 1.4375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-top: var(--spacing-48);
+  margin-bottom: var(--spacing-16);
+}
+
+/* Editorial Lists */
+.article-content ul,
+.article-content ol {
+  margin-bottom: var(--spacing-32);
+  padding-left: var(--spacing-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+}
+
+.article-content li {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #D4D4D8;
+}
+
+/* Elegant Pull Quote block */
+.article-pull-quote {
+  border-left: 3px solid var(--accent);
+  padding-left: var(--spacing-24);
+  margin: var(--spacing-48) 0;
+  background-color: rgba(16, 185, 129, 0.02);
+  padding-top: var(--spacing-16);
+  padding-bottom: var(--spacing-16);
+  padding-right: var(--spacing-16);
+}
+
+.pull-quote-text {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 3.5vw, 1.625rem);
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-8);
+}
+
+.pull-quote-author {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* Premium Inline Callout */
+.article-callout {
+  display: flex;
+  gap: var(--spacing-16);
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: var(--spacing-24);
+  margin: var(--spacing-48) 0;
+  position: relative;
+}
+
+.article-callout::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--accent);
+}
+
+.callout-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.callout-content {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.callout-content strong {
+  color: var(--text-primary);
+}
+
+/* Code Blocks styling */
+.article-code-block-wrapper {
+  margin: var(--spacing-48) 0;
+  background-color: #0C0C0E;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-12) var(--spacing-20);
+  background-color: #121214;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-heading);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.code-block-lang {
+  color: var(--accent);
+}
+
+.code-block-copy {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color var(--transition-fast);
+}
+
+.code-block-copy:hover {
+  color: var(--text-primary);
+}
+
+.code-block-pre {
+  padding: var(--spacing-24);
+  overflow-x: auto;
+  margin: 0;
+}
+
+.code-block-code {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #A7F3D0; /* Emerald mint tint */
+}
+
+/* Image Placeholder / Embed */
+.article-image-figure {
+  margin: var(--spacing-48) 0;
+  width: 100%;
+}
+
+.article-image-wrapper {
+  position: relative;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.article-image-placeholder-icon {
+  font-size: 3rem;
+  opacity: 0.15;
+}
+
+.article-image-caption {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  text-align: center;
+  margin-top: var(--spacing-12);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   7. CONTINUE READING / RELATED ARTICLES (Archive Card Language)
+───────────────────────────────────────────────────────────────── */
+.article-related-section {
+  grid-column: 1 / -1;
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding-top: var(--spacing-64);
+  margin-top: var(--spacing-64);
+}
+
+.related-section-header {
+  margin-bottom: var(--spacing-40);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.related-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-24);
+}
+
+@media (min-width: 768px) {
+  .related-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   8. INTERACTION & SCROLL REVEALS (Soft upward fade)
+───────────────────────────────────────────────────────────────── */
+.art-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 800ms var(--ease-out-expo), transform 800ms var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+
+.art-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   9. REDUCED MOTION SUPPORT
+───────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress-bar {
+    transition: none !important;
+  }
+  
+  .art-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

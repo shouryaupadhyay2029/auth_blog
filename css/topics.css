@@ -1,0 +1,208 @@
+/* BlogAuth V1 topics.css */
+
+/* 1. Topics Section Layout Wrapper */
+.topics-section {
+  position: relative;
+  width: 100%;
+  padding-bottom: var(--spacing-96);
+  z-index: 2;
+}
+
+/* 2. Grid Scaffolding: 30% Left / 70% Right */
+.topics-grid {
+  display: grid;
+  grid-template-columns: 0.3fr 0.7fr;
+  gap: var(--spacing-64);
+  align-items: start;
+}
+
+/* 3. Left Column: Sticky Editorial Headers */
+.topics-left {
+  position: sticky;
+  top: calc(var(--spacing-40) + 64px); /* Sticks below floating glass Navbar */
+}
+
+/* 4. Right Column: Vertical Topic Rows */
+.topics-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.topic-row {
+  border-bottom: 1px solid var(--border);
+  padding: var(--spacing-24) 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: border-color var(--transition-normal);
+}
+
+.topic-row-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: var(--spacing-24);
+}
+
+.topic-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  transition: color var(--transition-fast);
+  flex: 1;
+}
+
+.topic-meta {
+  display: flex;
+  gap: var(--spacing-24);
+  align-items: center;
+  margin-right: var(--spacing-32);
+  transition: opacity var(--transition-fast);
+}
+
+.topic-count {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.topic-updated {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.topic-arrow {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  transition: transform var(--transition-normal), color var(--transition-fast);
+  display: inline-block;
+  user-select: none;
+}
+
+/* 5. Hidden Previews (Expandable Details) */
+.topic-description {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-normal), opacity var(--transition-normal), margin-top var(--transition-normal);
+  padding-right: var(--spacing-64);
+}
+
+.topic-description p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 6. Interaction State Overrides (Hover & Click) */
+
+/* Divider brightens */
+.topic-row:hover,
+.topic-row.active-tap {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.topic-row:hover .topic-name,
+.topic-row.active-tap .topic-name {
+  color: var(--text-primary);
+}
+
+/* Metadata fades */
+.topic-row:hover .topic-meta,
+.topic-row.active-tap .topic-meta {
+  opacity: 0.55;
+}
+
+/* Arrow extends 6px */
+.topic-row:hover .topic-arrow,
+.topic-row.active-tap .topic-arrow {
+  transform: translateX(6px);
+  color: var(--accent);
+}
+
+/* Description slides in */
+.topic-row:hover .topic-description,
+.topic-row.active-tap .topic-description {
+  max-height: 120px; /* Space allowance for wrapped copy text */
+  opacity: 1;
+  margin-top: var(--spacing-12);
+}
+
+/* 7. Responsive Stylesheets Breakpoints */
+
+/* Tablet Split layout (<1024px) */
+@media (max-width: 1024px) {
+  .topics-section {
+    padding-bottom: var(--spacing-64);
+  }
+
+  .topics-grid {
+    grid-template-columns: 0.35fr 0.65fr; /* Slightly compressed split */
+    gap: var(--spacing-40);
+  }
+}
+
+/* Mobile single column (<768px) */
+@media (max-width: 768px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-40);
+  }
+
+  .topics-left {
+    position: static; /* sticky disabled on mobile */
+  }
+
+  .topic-row {
+    padding: var(--spacing-20) 0;
+  }
+
+  .topic-row-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--spacing-12);
+    position: relative;
+  }
+
+  .topic-name {
+    font-size: 1.125rem;
+    padding-right: var(--spacing-32); /* Avoid overlaying the arrow */
+  }
+
+  .topic-meta {
+    flex-direction: row;
+    gap: var(--spacing-16);
+    margin-right: 0;
+  }
+
+  .topic-arrow {
+    position: absolute;
+    right: 0;
+    top: 2px;
+  }
+
+  .topic-description {
+    padding-right: 0;
+  }
+}
+
+/* 8. Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .topic-row,
+  .topic-meta,
+  .topic-arrow,
+  .topic-description {
+    transition: none !important;
+    transform: none !important;
+  }
+  
+  .topic-row:hover .topic-arrow,
+  .topic-row.active-tap .topic-arrow {
+    transform: none !important;
+  }
+}

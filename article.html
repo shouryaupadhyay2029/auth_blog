@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Designing Systems That Scale Beyond the MVP — BlogAuth</title>
+  <!-- Core Design Tokens & Resets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <!-- Layout Grid & Primitives -->
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- Component Stylesheets -->
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/experience.css">
+  <link rel="stylesheet" href="css/latest.css">
+  <!-- Atomic Utilities & Transitions -->
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <!-- Sprint 8: Premium Micro Experience System -->
+  <link rel="stylesheet" href="css/micro.css">
+  <!-- Sprint 9: Architectural Interactive Editorial Cards -->
+  <link rel="stylesheet" href="css/cards.css">
+  <!-- Sprint 7: Article Detail Page Styles -->
+  <link rel="stylesheet" href="css/article.css">
+</head>
+<body>
+  <!-- Static Paper Grain Overlay Atmosphere -->
+  <div class="paper-grain-overlay"></div>
+
+  <!-- Thin scroll-progress tracker element -->
+  <div class="reading-progress-container">
+    <div class="reading-progress-bar"></div>
+  </div>
+
+  <!-- Fixed Floating Premium Navbar Header -->
+  <header class="navbar-header">
+    <div class="container navbar-container">
+      <div class="navbar-surface">
+        
+        <!-- Left Section: Logo & Desktop Links -->
+        <div class="navbar-left">
+          <a href="index.html" class="logo" aria-label="BlogAuth homepage">
+            <span class="logo-mark">▲</span>
+            <span class="logo-text">BLOGAUTH</span>
+          </a>
+          <nav class="nav-desktop" aria-label="Main Navigation">
+            <ul class="nav-links">
+              <li><a href="index.html">Home</a></li>
+              <li class="active"><a href="#">Articles</a></li>
+              <li><a href="#">Categories</a></li>
+              <li><a href="#">About</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Right Section: Search & Actions -->
+        <div class="navbar-right">
+          <div class="search-bar">
+            <span class="search-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </span>
+            <input type="text" placeholder="Search articles..." id="nav-search" aria-label="Search articles">
+          </div>
+          <div class="user-actions">
+            <button class="btn btn-ghost" type="button">Sign In</button>
+            <button class="btn btn-primary" type="button">Start Writing</button>
+          </div>
+          
+          <!-- Hamburger menu trigger (Mobile & Tablet) -->
+          <button class="mobile-toggle" type="button" aria-label="Open navigation menu">
+            <span class="hamburger-box">
+              <span class="hamburger-line"></span>
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Overlay & Sliding Navigation Panel -->
+  <div class="mobile-drawer-overlay"></div>
+  <div class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div class="drawer-header">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">▲</span>
+        <span class="logo-text">BLOGAUTH</span>
+      </a>
+      <button class="drawer-close" type="button" aria-label="Close navigation menu">✕</button>
+    </div>
+    
+    <div class="nav-mobile">
+      <nav aria-label="Mobile Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li class="active"><a href="#">Articles</a></li>
+          <li><a href="#">Categories</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="drawer-search">
+      <span class="search-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </span>
+      <input type="text" placeholder="Search articles..." id="drawer-search-input" aria-label="Search articles">
+    </div>
+
+    <div class="drawer-actions">
+      <button class="btn btn-ghost w-full" type="button">Sign In</button>
+      <button class="btn btn-primary w-full" type="button">Start Writing</button>
+    </div>
+  </div>
+
+  <!-- Main layout frame -->
+  <main class="article-page">
+    <div class="article-container">
+      
+      <!-- 1. ARTICLE HERO HEADER -->
+      <header class="article-header">
+        <div class="article-header-meta">
+          <span class="article-header-category">Architecture</span>
+          <span class="article-header-date">July 30, 2026</span>
+          <span class="article-header-read-time">5 min read</span>
+        </div>
+        
+        <h1 class="article-main-title">Designing Systems That Scale Beyond the MVP</h1>
+        
+        <p class="article-subtitle">
+          A comprehensive guide on managing technological debt, establishing clean architectural boundaries, and structuring databases for high-concurrency developer platforms.
+        </p>
+
+        <!-- Mobile & Tablet Author Info block (visible on mobile layout only) -->
+        <div class="article-mobile-author-block">
+          <div class="mobile-author-info">
+            <span class="author-avatar">▲</span>
+            <div class="mobile-author-text">
+              <span class="mobile-author-name">Alex Rivera</span>
+              <span class="mobile-author-role">Principal Engineer · 5 min read</span>
+            </div>
+          </div>
+          <div class="mobile-share-bookmark">
+            <button class="btn-icon-square" type="button" aria-label="Bookmark article">🔖</button>
+            <button class="btn-icon-square" type="button" aria-label="Share article">🔗</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- 2. LEFT SIDEBAR: STICKY TABLE OF CONTENTS (Desktop Only) -->
+      <aside class="article-toc-sidebar" aria-label="Table of Contents">
+        <h4 class="toc-title">Table of Contents</h4>
+        <nav>
+          <ul class="toc-list">
+            <li><a href="#section-introduction" class="toc-link">Introduction</a></li>
+            <li><a href="#section-boundaries" class="toc-link">Architectural Boundaries</a></li>
+            <li><a href="#section-patterns" class="toc-link">Data Models & Patterns</a></li>
+            <li><a href="#section-debt" class="toc-link">Handling Tech Debt</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- 3. ARTICLE BODY CONTENT -->
+      <article class="article-content" id="article-body">
+        
+        <p class="article-body-p" id="section-introduction">
+          Building a Minimum Viable Product (MVP) requires speed, compromises, and focus. But when traction arrives, those compromise choices quickly turn into production bottlenecks. Transitioning a rapidly growing platform from an MVP to a scaling architecture is one of the most high-stakes transitions engineering teams face.
+        </p>
+
+        <p class="article-body-p">
+          To build systems that survive scaling transitions, engineers must construct distinct boundaries around domain services and avoid the temptation to solve scaling limits by adding more servers to unoptimized data layers.
+        </p>
+
+        <h2 class="article-body-h2" id="section-boundaries">1. Establishing Clear Architectural Boundaries</h2>
+        
+        <p class="article-body-p">
+          In early-stage apps, modules talk directly to other databases or write directly to shared state tables. While fast to build, this patterns couples unrelated systems. When scaling, decouple modules using clear boundary interfaces.
+        </p>
+
+        <!-- Premium Inline Callout component -->
+        <div class="article-callout">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <strong>Key Concept:</strong> Boundaries protect the internal logic of a microservice or database system from changes in client specifications. Keep domain logic isolated from external requests.
+          </div>
+        </div>
+
+        <p class="article-body-p">
+          By isolating domain models, systems can scale independently. Database schemas can be refactored behind service APIs without breaking upstream features, preventing systemic downtime.
+        </p>
+
+        <h2 class="article-body-h2" id="section-patterns">2. Data Models and Scalable Patterns</h2>
+        
+        <p class="article-body-p">
+          Scaling data flow means selecting patterns that prevent locking and queue build-up. We should move operations out of the immediate HTTP request-response loop into asynchronous pipelines.
+        </p>
+
+        <!-- Elegant Pull Quote Component -->
+        <div class="article-pull-quote">
+          <p class="pull-quote-text">
+            "Software architecture is the art of deciding what systems to separate, how to handle state updates asynchronously, and when to pay back design debt."
+          </p>
+          <span class="pull-quote-author">Alex Rivera, Principal Engineer</span>
+        </div>
+
+        <p class="article-body-p">
+          When dealing with concurrent operations, use event queues like RabbitMQ or Kafka. Instead of executing writes directly inside HTTP controllers, publish events and handle database operations asynchronously.
+        </p>
+
+        <h3 class="article-body-h3">Example: Asynchronous Event Dispatching</h3>
+        
+        <p class="article-body-p">
+          A common scaling bottleneck is blocking execution while sending external emails or writing analytical entries. Decouple these events immediately.
+        </p>
+
+        <!-- Code Block Component -->
+        <div class="article-code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">TypeScript</span>
+            <button class="code-block-copy" type="button">Copy Code</button>
+          </div>
+          <pre class="code-block-pre"><code class="code-block-code">// Asynchronous Event publisher to prevent blocking HTTP requests
+import { EventBroker } from "./broker";
+
+export async function handleUserSignup(payload: SignupData) {
+  // 1. Perform lightweight local validations
+  const user = await db.users.create(payload);
+
+  // 2. Publish event to queue instead of waiting for external services
+  await EventBroker.publish("user.registered", {
+    userId: user.id,
+    email: user.email,
+  });
+
+  return { success: true, message: "Registration processing" };
+}</code></pre>
+        </div>
+
+        <h2 class="article-body-h2" id="section-debt">3. Managing Technological Debt</h2>
+        
+        <p class="article-body-p">
+          Refactoring is not a rewrite. Iterative changes are cleaner, less risky, and easier to execute in continuous integration cycles. Focus on hot paths—the 5% of database queries causing 95% of server latency.
+        </p>
+
+        <!-- Image Placeholder / Embed Component -->
+        <figure class="article-image-figure">
+          <div class="article-image-wrapper">
+            <div class="article-image-placeholder-icon">📊</div>
+          </div>
+          <figcaption class="article-image-caption">Figure 1.1: System metrics showing read/write throughput after separating query/command databases</figcaption>
+        </figure>
+
+        <p class="article-body-p">
+          Establishing read replicas, query caching (Redis), and database indexing strategies allows you to delay complex rewrites while keeping API latencies low. Always prioritize developer stability and system safety.
+        </p>
+
+      </article>
+
+      <!-- 4. RIGHT SIDEBAR: STICKY AUTHOR & SHARE METADATA (Desktop Only) -->
+      <aside class="article-meta-sidebar" aria-label="Article Metadata">
+        <div class="sidebar-author-card">
+          <div class="sidebar-author-header">
+            <span class="author-avatar">▲</span>
+            <div class="mobile-author-text">
+              <span class="mobile-author-name">Alex Rivera</span>
+              <span class="mobile-author-role">Principal Engineer</span>
+            </div>
+          </div>
+          <p class="sidebar-author-bio">
+            Alex designs distributed developer platforms and systems architectures. He has helped scale multiple startups to high-concurrency systems.
+          </p>
+          <div class="sidebar-meta-list">
+            <div class="sidebar-meta-item">
+              <span>Published</span>
+              <span class="sidebar-meta-value">July 30, 2026</span>
+            </div>
+            <div class="sidebar-meta-item">
+              <span>Reading Time</span>
+              <span class="sidebar-meta-value">5 min read</span>
+            </div>
+            <div class="sidebar-meta-item">
+              <span>Category</span>
+              <span class="sidebar-meta-value text-accent-color">Architecture</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-actions">
+          <button class="btn btn-primary w-full" type="button">🔖 Bookmark Article</button>
+          
+          <div class="sidebar-share-title">Share Article</div>
+          <div class="sidebar-share-buttons">
+            <button class="btn-icon-square" type="button" title="Share on Twitter" aria-label="Share on Twitter">𝕏</button>
+            <button class="btn-icon-square" type="button" title="Share on LinkedIn" aria-label="Share on LinkedIn">in</button>
+            <button class="btn-icon-square" type="button" title="Copy Link" aria-label="Copy Link">🔗</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 5. RELATED ARTICLES (3 Columns using Archive Card Language) -->
+      <section class="article-related-section">
+        <div class="related-section-header">
+          <h3 class="related-section-title">Continue Reading</h3>
+        </div>
+        
+        <div class="related-grid">
+          
+          <!-- Card 1 (Related) -->
+          <article class="featured-small-card">
+            <div class="card-header">
+              <span class="card-category">Engineering</span>
+              <span class="card-date">July 24, 2026</span>
+            </div>
+            <h3 class="card-title">Building a Distributed Message Queue from Scratch in Rust</h3>
+            <p class="card-excerpt">
+              An in-depth look at implementing consensus algorithms, managing network partitions, and building disk-backed storage engines.
+            </p>
+            <div class="card-footer">
+              <span class="card-author-name">Sarah Chen</span>
+              <a href="#" class="card-link">Read Story <span>→</span></a>
+            </div>
+          </article>
+
+          <!-- Card 2 (Related) -->
+          <article class="featured-small-card">
+            <div class="card-header">
+              <span class="card-category">Databases</span>
+              <span class="card-date">July 18, 2026</span>
+            </div>
+            <h3 class="card-title">Optimizing Read Performance on PostgreSQL Databases</h3>
+            <p class="card-excerpt">
+              Understanding query execution planning, index layouts, partitioning strategies, and tuning cache settings.
+            </p>
+            <div class="card-footer">
+              <span class="card-author-name">Elena Rostova</span>
+              <a href="#" class="card-link">Read Story <span>→</span></a>
+            </div>
+          </article>
+
+          <!-- Card 3 (Related) -->
+          <article class="featured-small-card">
+            <div class="card-header">
+              <span class="card-category">Security</span>
+              <span class="card-date">July 15, 2026</span>
+            </div>
+            <h3 class="card-title">A Practical Approach to Zero-Trust Client Authentication</h3>
+            <p class="card-excerpt">
+              Securing APIs with short-lived session authorization codes, hardware tokens, and key encapsulation techniques.
+            </p>
+            <div class="card-footer">
+              <span class="card-author-name">David Vance</span>
+              <a href="#" class="card-link">Read Story <span>→</span></a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Foot-note style Footer matching design principles -->
+  <footer style="border-top: 1px solid var(--border); padding: var(--spacing-48) 0; margin-top: var(--spacing-96);">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-24);">
+      <div style="font-family: var(--font-heading); font-size: 0.8125rem; font-weight: 700; color: var(--text-primary);">
+        ▲ BLOGAUTH <span style="font-weight: 400; opacity: 0.4; margin-left: var(--spacing-8);">© 2026 ARCHIVE V1</span>
+      </div>
+      <div style="font-size: 0.75rem; color: var(--text-secondary); opacity: 0.6;">
+        Built for code and clarity.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script loads -->
+  <script src="js/micro.js"></script>
+  <script src="js/cards.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/article.js"></script>
+</body>
+</html>

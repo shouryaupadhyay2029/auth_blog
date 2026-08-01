@@ -1,0 +1,365 @@
+/* BlogAuth V1 auth.css — Sprint 8: Authentication Experience */
+
+/* ─────────────────────────────────────────────────────────────────
+   1. EDITORIAL LAYOUT STRUCTURE (Split Screen Viewports)
+───────────────────────────────────────────────────────────────── */
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: var(--background);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .auth-page {
+    grid-template-columns: 1.1fr 0.9fr; /* Left Brand, Right Form */
+  }
+}
+
+/* Left Brand Panel (Desktop Only) */
+.auth-brand-panel {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--spacing-64);
+  border-right: 1px solid var(--border);
+  position: relative;
+  background-color: #0E0E10; /* Slightly darker charcoal contrast */
+}
+
+@media (min-width: 1024px) {
+  .auth-brand-panel {
+    display: flex;
+  }
+}
+
+.auth-brand-top {
+  display: flex;
+  align-items: center;
+}
+
+.auth-brand-logo {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+}
+
+.auth-brand-middle {
+  max-width: 480px;
+}
+
+.auth-brand-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-24);
+}
+
+.auth-brand-quote {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--accent);
+  margin-bottom: var(--spacing-16);
+  opacity: 0.9;
+  border-left: 2px solid var(--accent);
+  padding-left: var(--spacing-16);
+}
+
+.auth-brand-rule {
+  width: 40px;
+  height: 1px;
+  background-color: var(--border);
+  margin-bottom: var(--spacing-24);
+}
+
+.auth-brand-footer {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  letter-spacing: 0.02em;
+}
+
+/* Right Content Panel (Auth Card Viewports) */
+.auth-form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-24);
+  position: relative;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .auth-form-panel {
+    padding: var(--spacing-48);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   2. AUTHENTICATION CARD (Archive Card Language Integration)
+───────────────────────────────────────────────────────────────── */
+.auth-card {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: var(--spacing-32) var(--spacing-24);
+  /* The chamfer and stack styles are automatically inherited via cards.css
+     since we apply card classes, but we can customize pad size */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+  position: relative;
+  transform-style: preserve-3d;
+  --rx: 0deg;
+  --ry: 0deg;
+}
+
+@media (min-width: 768px) {
+  .auth-card {
+    padding: var(--spacing-48);
+  }
+}
+
+.auth-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.auth-card-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.auth-card-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.auth-card-subtitle a {
+  color: var(--accent);
+  font-weight: 500;
+  position: relative;
+}
+
+.auth-card-subtitle a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition-fast);
+}
+
+.auth-card-subtitle a:hover::after {
+  transform: scaleX(1);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   3. PREMIUM INPUT FIELDS & INTERACTION
+───────────────────────────────────────────────────────────────── */
+.form-group-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-20);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  position: relative;
+}
+
+.form-label {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.form-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.form-input {
+  width: 100%;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  padding: var(--spacing-12) var(--spacing-16);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color var(--transition-normal), background-color var(--transition-normal);
+}
+
+/* Base interactive underline */
+.form-input-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: center center;
+  transition: transform var(--transition-normal);
+  pointer-events: none;
+}
+
+.form-input:focus {
+  border-color: rgba(16, 185, 129, 0.4);
+  background-color: #17171B;
+}
+
+.form-input:focus + .form-input-border {
+  transform: scaleX(1);
+}
+
+/* Validation message placeholder */
+.form-validation-msg {
+  min-height: 18px;
+  font-size: 0.75rem;
+  color: #EF4444; /* Premium crimson warning */
+  margin-top: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   4. FORM ROW UTILITIES & CHECKBOXES
+───────────────────────────────────────────────────────────────── */
+.form-options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8125rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-input {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.forgot-pass-link {
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.forgot-pass-link:hover {
+  color: var(--accent);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   5. DECORATIVE SEPARATORS & SOCIAL LOGINS
+───────────────────────────────────────────────────────────────── */
+.auth-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-16);
+  margin: var(--spacing-8) 0;
+}
+
+.auth-separator::before,
+.auth-separator::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--border);
+}
+
+.auth-separator-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.btn-social {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-12);
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: var(--spacing-12);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-social:hover {
+  background-color: var(--surface);
+  border-color: var(--text-secondary);
+}
+
+.btn-social:active {
+  transform: scale(0.99);
+}
+
+.social-logo-mark {
+  font-size: 1rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   6. TRANSITIONS & FADES (Page Entry)
+───────────────────────────────────────────────────────────────── */
+.auth-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 800ms var(--ease-out-expo), transform 800ms var(--ease-out-expo);
+}
+
+.auth-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   7. REDUCED MOTION SUPPORT
+───────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .auth-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

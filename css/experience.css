@@ -1,0 +1,120 @@
+/* BlogAuth V1 experience.css — Polished Premium Edition */
+
+/* 1. Vignette Background Depth Overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 45%, rgba(12, 12, 14, 0.4) 100%);
+  pointer-events: none;
+  z-index: 1; /* sits behind active text but above canvas backgrounds */
+}
+
+/* 2. Static Premium Paper Grain Overlay */
+.paper-grain-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* High-frequency, 4-octave turbulence noise for micro-fine paper pulp look */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.022; /* 2.2% subtle monochrome texture */
+  pointer-events: none;
+  z-index: 99999;
+}
+
+/* Entry states migrated to micro.css / micro.js — Sprint 8 */
+/* .reveal-item and .featured-card-wrapper entry states are now
+   handled by the unified .m-init / .m-hero-card system in micro.css */
+
+
+/* Featured card hover, ::before, and transition — delegated to cards.css Sprint 9 */
+
+
+/* 5. Button Elevation & Microinteractions */
+.btn {
+  transition: 
+    background-color 200ms cubic-bezier(0.16, 1, 0.3, 1), 
+    border-color 200ms cubic-bezier(0.16, 1, 0.3, 1), 
+    color 200ms cubic-bezier(0.16, 1, 0.3, 1), 
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1), 
+    box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tiny elevation on hover (2px) */
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Start writing CTA shadow transition */
+.btn-primary:hover {
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+}
+
+/* 6. Navbar Polishes */
+
+/* Hide old css static active underlines */
+.nav-links li.active::after {
+  display: none !important;
+}
+
+/* Sliding active underline node */
+.nav-underline {
+  position: absolute;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--accent);
+  transition: 
+    left 300ms cubic-bezier(0.16, 1, 0.3, 1), 
+    width 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+/* Search input hover glow border changes */
+.search-bar input {
+  transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1), background-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-bar input:hover:not(:focus) {
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.1);
+}
+
+/* Sign In opacity hover transition */
+.btn-ghost {
+  opacity: 0.85;
+  transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1), background-color 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-ghost:hover {
+  opacity: 1;
+}
+
+/* 7. Motion-Sensitive Prefers-Reduced-Motion Fallbacks */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    display: none !important;
+  }
+
+  .featured-card,
+  .btn,
+  .card-link span,
+  .nav-underline {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  
+  .featured-card:hover {
+    transform: none !important;
+    box-shadow: var(--shadow) !important;
+  }
+  
+  .featured-card::before {
+    display: none !important;
+  }
+}

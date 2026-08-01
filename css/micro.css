@@ -1,0 +1,396 @@
+/* BlogAuth V1 micro.css — Sprint 8: Premium Micro Experience System */
+/* Single consistent easing: cubic-bezier(0.22, 1, 0.36, 1)          */
+
+/* ─────────────────────────────────────────────────────────────────
+   MOTION SYSTEM TOKENS
+   All durations and easings flow from one source of truth.
+───────────────────────────────────────────────────────────────── */
+:root {
+  --ease-out-expo:  cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-xs:   180ms;
+  --dur-sm:   280ms;
+  --dur-md:   420ms;
+  --dur-lg:   600ms;
+  --dur-xl:   800ms;
+  --dur-xxl: 1000ms;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   1. PAPER GRAIN AMBIENT DRIFT
+   Nearly invisible. 50-second cycle. GPU composited.
+───────────────────────────────────────────────────────────────── */
+@keyframes grain-drift {
+  0%   { transform: translate(0, 0) scale(1.04); }
+  25%  { transform: translate(-3px, -2px) scale(1.04); }
+  50%  { transform: translate(2px, -3px) scale(1.04); }
+  75%  { transform: translate(-2px, 3px) scale(1.04); }
+  100% { transform: translate(0, 0) scale(1.04); }
+}
+
+.paper-grain-overlay {
+  will-change: transform;
+  animation: grain-drift 52s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   2. PAGE ENTRY — NAVBAR
+   Surface scales from 98% → 100%.
+   All children start hidden; JS adds .m-visible to orchestrate.
+───────────────────────────────────────────────────────────────── */
+
+/* Initial state: hidden, shifted down slightly */
+.m-init {
+  opacity: 0;
+  transform: translateY(12px);
+  will-change: opacity, transform;
+}
+
+/* Reveal state — applied by JS with staggered delay */
+.m-init.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-lg) var(--ease-out-expo),
+    transform var(--dur-lg) var(--ease-out-expo);
+}
+
+/* Navbar surface: scale from 98% → 100% */
+.m-navbar-surface {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+  will-change: opacity, transform;
+}
+
+.m-navbar-surface.m-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity var(--dur-xl) var(--ease-out-expo),
+    transform var(--dur-xl) var(--ease-out-expo);
+}
+
+/* Logo — fades upward */
+.m-logo {
+  opacity: 0;
+  transform: translateY(8px);
+  will-change: opacity, transform;
+}
+
+.m-logo.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-lg) var(--ease-out-expo),
+    transform var(--dur-lg) var(--ease-out-expo);
+}
+
+/* Each nav link — appears in sequence */
+.m-nav-link {
+  opacity: 0;
+  transform: translateY(6px);
+  will-change: opacity, transform;
+}
+
+.m-nav-link.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-md) var(--ease-out-expo),
+    transform var(--dur-md) var(--ease-out-expo);
+}
+
+/* Search bar */
+.m-search {
+  opacity: 0;
+  transform: translateY(6px);
+  will-change: opacity, transform;
+}
+
+.m-search.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-md) var(--ease-out-expo),
+    transform var(--dur-md) var(--ease-out-expo);
+}
+
+/* CTA buttons */
+.m-cta {
+  opacity: 0;
+  transform: translateY(6px);
+  will-change: opacity, transform;
+}
+
+.m-cta.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-md) var(--ease-out-expo),
+    transform var(--dur-md) var(--ease-out-expo);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   3. HERO TEXT — CLIP-MASK LINE REVEAL
+   Each text block clips up from an overflow: hidden wrapper.
+   translateY(20px) → translateY(0), opacity 0 → 1.
+───────────────────────────────────────────────────────────────── */
+
+/* Clip wrapper: hides overflow so text appears to rise into view */
+.m-clip {
+  overflow: hidden;
+  display: block;
+}
+
+/* The inner text node rises into the clip */
+.m-clip-inner {
+  display: block;
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+}
+
+.m-clip-inner.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-xl) var(--ease-out-expo),
+    transform var(--dur-xl) var(--ease-out-expo);
+}
+
+/* Hero stat items — fade up separately */
+.m-stat {
+  opacity: 0;
+  transform: translateY(10px);
+  will-change: opacity, transform;
+}
+
+.m-stat.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-lg) var(--ease-out-expo),
+    transform var(--dur-lg) var(--ease-out-expo);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   4. HERO CARD — Page load entry
+   Slides up 24px, scales 99% → 100%, fades in.
+───────────────────────────────────────────────────────────────── */
+.m-hero-card {
+  opacity: 0;
+  transform: translateY(24px) scale(0.99);
+  will-change: opacity, transform;
+}
+
+.m-hero-card.m-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity var(--dur-xxl) var(--ease-out-expo),
+    transform var(--dur-xxl) var(--ease-out-expo);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   5. SECTION SCROLL REVEALS — Unified system
+   Replaces the per-section .reveal-scroll / .latest-reveal classes.
+   24px travel. Single fire via IntersectionObserver.
+───────────────────────────────────────────────────────────────── */
+.m-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  will-change: opacity, transform;
+}
+
+.m-scroll.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-xl) var(--ease-out-expo),
+    transform var(--dur-xl) var(--ease-out-expo);
+}
+
+/* Stagger is applied via CSS custom property from JS */
+.m-scroll[data-m-delay] {
+  transition-delay: calc(var(--m-delay, 0) * 1ms);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   6. EDITORIAL DIVIDER ANIMATION
+   Line grows left → right.
+   Label fades in after line.
+───────────────────────────────────────────────────────────────── */
+.divider-line {
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform var(--dur-xl) var(--ease-out-expo);
+}
+
+.editorial-divider.m-visible .divider-line {
+  transform: scaleX(1);
+}
+
+.divider-label {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity var(--dur-lg) var(--ease-out-expo) 220ms,
+    transform var(--dur-lg) var(--ease-out-expo) 220ms;
+}
+
+.editorial-divider.m-visible .divider-label {
+  opacity: 0.4; /* Restores existing design opacity */
+  transform: translateX(0);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   7. BUTTONS — Physical feel
+   2px lift, shadow deepens, background expands via scale.
+───────────────────────────────────────────────────────────────── */
+.btn {
+  /* Already has transition from experience.css — enhance here */
+  transition:
+    background-color var(--dur-xs) var(--ease-out-expo),
+    border-color var(--dur-xs) var(--ease-out-expo),
+    color var(--dur-xs) var(--ease-out-expo),
+    transform var(--dur-sm) var(--ease-out-expo),
+    box-shadow var(--dur-sm) var(--ease-out-expo) !important;
+}
+
+.btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.22) !important;
+}
+
+.btn-secondary:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98) !important;
+  box-shadow: none !important;
+  transition-duration: 80ms !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   8 & 9. CARD INTERACTIONS + BORDER TRACE
+   → Fully delegated to cards.css (Sprint 9)
+   cards.css owns: chamfer shape, paper stack, tilt, accent trace,
+   category tabs, hover sequence, proximity, all card ::before/::after.
+───────────────────────────────────────────────────────────────── */
+
+
+/* ─────────────────────────────────────────────────────────────────
+   10. PROXIMITY EFFECT
+   JS adds .m-proximity class when mouse is within 120px.
+   Raises 1px, brightens border, deepens shadow — very subtle.
+───────────────────────────────────────────────────────────────── */
+.m-proximity {
+  transform: translateY(-1px) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.4) !important;
+  transition:
+    transform var(--dur-md) var(--ease-out-expo),
+    border-color var(--dur-md) var(--ease-out-expo),
+    box-shadow var(--dur-md) var(--ease-out-expo) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   11. TOPIC ROWS — scroll reveal initial state
+   Each row hides until IntersectionObserver fires.
+───────────────────────────────────────────────────────────────── */
+.topic-row {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--dur-lg) var(--ease-out-expo),
+    transform var(--dur-lg) var(--ease-out-expo),
+    border-color var(--dur-sm) var(--ease-out-expo);
+}
+
+.topic-row.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   12. SECTION HEADING LINE REVEALS
+   Each heading line reveals with translateY(16px) → 0.
+   Applied by JS wrapping each text node.
+───────────────────────────────────────────────────────────────── */
+.m-heading-line {
+  display: block;
+  overflow: hidden;
+}
+
+.m-heading-line-inner {
+  display: block;
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: opacity, transform;
+}
+
+.m-heading-line-inner.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-lg) var(--ease-out-expo),
+    transform var(--dur-lg) var(--ease-out-expo);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   13. REDUCED MOTION — Universal kill switch
+───────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  /* Grain */
+  .paper-grain-overlay {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* All micro-motion classes — instant reveal */
+  .m-init,
+  .m-navbar-surface,
+  .m-logo,
+  .m-nav-link,
+  .m-search,
+  .m-cta,
+  .m-clip-inner,
+  .m-stat,
+  .m-hero-card,
+  .m-scroll,
+  .m-heading-line-inner,
+  .topic-row {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Divider */
+  .divider-line {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .divider-label {
+    opacity: 0.4 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Buttons */
+  .btn:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .btn:active {
+    transform: scale(0.98) !important;
+  }
+
+  /* Cards → delegated to cards.css reduced-motion block */
+
+}

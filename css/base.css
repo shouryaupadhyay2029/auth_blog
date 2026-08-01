@@ -1,0 +1,58 @@
+/* BlogAuth V1 base.css */
+
+/* Global Box-Sizing Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base Document Canvas Setup */
+html {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Premium Text Selection Colors */
+::selection {
+  background-color: var(--accent);
+  color: var(--text-primary);
+}
+
+/* Reset image/media display properties */
+img, picture, svg, video {
+  max-width: 100%;
+  display: block;
+}
+
+/* Custom Scrollbar Styling (Tuned for dark charcoal theme) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}

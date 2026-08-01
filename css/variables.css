@@ -1,0 +1,67 @@
+/* BlogAuth V1 variables.css */
+
+@font-face {
+  font-family: 'Astera Casty';
+  src: url('../fonts/AsteraCastyDemoRegular-Jp00E.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Feldora';
+  src: url('../fonts/FeldoraDemoRegular-ZpjY3.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Color System — Premium Charcoal Dark Theme */
+  --background: #121214;
+  --surface: #1A1A1E;
+  --surface-2: #202024;
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --accent: #10B981; /* Emerald Green */
+  --accent-hover: #34D399;
+  --border: #27272A;
+  --border-light: rgba(244, 244, 245, 0.05);
+
+  /* Spacing Scale (Base: 4px) */
+  --spacing-4: 0.25rem;   /* 4px */
+  --spacing-8: 0.5rem;    /* 8px */
+  --spacing-12: 0.75rem;  /* 12px */
+  --spacing-16: 1rem;     /* 16px */
+  --spacing-20: 1.25rem;  /* 20px */
+  --spacing-24: 1.5rem;   /* 24px */
+  --spacing-32: 2rem;     /* 32px */
+  --spacing-40: 2.5rem;   /* 40px */
+  --spacing-48: 3rem;     /* 48px */
+  --spacing-64: 4rem;     /* 64px */
+  --spacing-80: 5rem;     /* 80px */
+  --spacing-96: 6rem;     /* 96px */
+  --spacing-128: 8rem;    /* 128px */
+
+  /* Layout Boundaries */
+  --container-width: 1280px;
+
+  /* Shadows (Tuned for Dark Surfaces) */
+  --shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.5), 0 4px 8px -2px rgba(0, 0, 0, 0.3);
+
+  /* Border Radii */
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Fonts */
+  --font-heading: 'Astera Casty', 'General Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: 'Feldora', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}

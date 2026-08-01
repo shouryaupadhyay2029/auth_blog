@@ -1,0 +1,424 @@
+/* BlogAuth V1 dashboard.css — Sprint 9: Editorial Dashboard */
+
+/* ─────────────────────────────────────────────────────────────────
+   1. LAYOUT ARCHITECTURE & SPACING
+───────────────────────────────────────────────────────────────── */
+.dashboard-page {
+  padding-top: 140px; /* Space for fixed navbar header */
+  padding-bottom: var(--spacing-128);
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-48);
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-24);
+}
+
+@media (min-width: 1024px) {
+  .dashboard-container {
+    grid-template-columns: 2.2fr 0.8fr; /* Left content workspace, Right sidebar actions */
+    gap: var(--spacing-64);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   2. WELCOME HEADER BLOCK
+───────────────────────────────────────────────────────────────── */
+.dashboard-header {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-24);
+  padding-bottom: var(--spacing-32);
+  border-bottom: 1px solid var(--border);
+}
+
+@media (min-width: 768px) {
+  .dashboard-header {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+.header-welcome {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.welcome-label {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.welcome-title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+}
+
+.welcome-quote {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   3. QUICK STATS PANEL (Archive Card Shape Inherited)
+───────────────────────────────────────────────────────────────── */
+.dashboard-stats-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-16);
+}
+
+@media (min-width: 768px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-24);
+  }
+}
+
+.stat-card-val {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-card-lbl {
+  font-family: var(--font-heading);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.stat-card-change {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   4. DRAFTS & PUBLISHED SECTIONS
+───────────────────────────────────────────────────────────────── */
+.workspace-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-64);
+}
+
+.dashboard-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+}
+
+.dashboard-sec-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Draft Editorial List */
+.draft-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+.draft-item {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: var(--spacing-20) var(--spacing-24);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-16);
+}
+
+.draft-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.draft-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.draft-meta {
+  display: flex;
+  gap: var(--spacing-12);
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.status-chip-draft {
+  padding: 2px 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  font-family: var(--font-heading);
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Published Articles Grid / Table List */
+.published-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+}
+
+.published-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.published-table th {
+  font-family: var(--font-heading);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  background-color: #151518;
+  padding: var(--spacing-16) var(--spacing-24);
+  border-bottom: 1px solid var(--border);
+}
+
+.published-table td {
+  padding: var(--spacing-16) var(--spacing-24);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.published-table tr:last-child td {
+  border-bottom: none;
+}
+
+.published-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.01);
+}
+
+.pub-title-col {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.action-links {
+  display: flex;
+  gap: var(--spacing-16);
+}
+
+.link-btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link-btn-edit {
+  color: var(--accent);
+}
+
+.link-btn-delete {
+  color: #EF4444;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   5. ANALYTICS & WRITING ACTIVITY CARDS
+───────────────────────────────────────────────────────────────── */
+/* CSS Bar Chart Component */
+.chart-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: var(--spacing-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+}
+
+.chart-bars-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 120px;
+  padding-top: var(--spacing-16);
+}
+
+.chart-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-8);
+  flex: 1;
+}
+
+.chart-bar-fill {
+  width: 16px;
+  background-color: var(--accent);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  opacity: 0.75;
+  transition: opacity var(--transition-fast), transform var(--transition-normal);
+  transform-origin: bottom center;
+}
+
+.chart-bar-container:hover .chart-bar-fill {
+  opacity: 1;
+  transform: scaleY(1.05);
+}
+
+.chart-bar-lbl {
+  font-size: 0.625rem;
+  color: var(--text-secondary);
+}
+
+/* Writing Heatmap Grid Component */
+.heatmap-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: var(--spacing-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(26, 1fr); /* 26 columns representation */
+  gap: 4px;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  transition: background-color var(--transition-fast);
+}
+
+.heatmap-cell:hover {
+  border-color: var(--accent);
+}
+
+/* Color scaling mock states */
+.heatmap-c-1 { background-color: rgba(16, 185, 129, 0.15); }
+.heatmap-c-2 { background-color: rgba(16, 185, 129, 0.4); }
+.heatmap-c-3 { background-color: rgba(16, 185, 129, 0.7); }
+
+/* ─────────────────────────────────────────────────────────────────
+   6. RIGHT SIDEBAR (Sticky Quick Actions)
+───────────────────────────────────────────────────────────────── */
+.dashboard-actions-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-32);
+}
+
+@media (min-width: 1024px) {
+  .dashboard-actions-sidebar {
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+  }
+}
+
+.actions-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: var(--spacing-28);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-20);
+}
+
+.actions-card-title {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.action-menu-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+}
+
+.action-menu-item a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  padding: var(--spacing-12) var(--spacing-16);
+  border: 1px solid var(--border);
+  background-color: var(--surface-2);
+  transition: all var(--transition-fast);
+}
+
+.action-menu-item a:hover {
+  border-color: var(--accent);
+  background-color: rgba(16, 185, 129, 0.02);
+  color: var(--accent);
+  padding-left: var(--spacing-20);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   7. TRANSITIONS & REVEALS (Page Entry Fades)
+───────────────────────────────────────────────────────────────── */
+.dash-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 800ms var(--ease-out-expo), transform 800ms var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+
+.dash-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   8. REDUCED MOTION SUPPORT
+───────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .dash-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

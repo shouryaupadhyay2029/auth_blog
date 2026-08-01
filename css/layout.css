@@ -1,0 +1,114 @@
+/* BlogAuth V1 layout.css */
+
+/* Center Alignment Container */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--spacing-24);
+  padding-right: var(--spacing-24);
+}
+
+/* Page Section Spacing Wrapper */
+.section {
+  position: relative;
+  width: 100%;
+  padding-top: var(--spacing-64);
+  padding-bottom: var(--spacing-64);
+  overflow: hidden;
+}
+
+/* Outer layout wrapper */
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Flexbox Layout Utilities */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+/* CSS Grid Scaffolding (Mobile First) */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-24);
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Responsive Layout Breakpoints */
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+  .section {
+    padding-top: var(--spacing-96);
+    padding-bottom: var(--spacing-96);
+  }
+  
+  .container {
+    padding-left: var(--spacing-32);
+    padding-right: var(--spacing-32);
+  }
+}
+
+/* Laptop (1024px+) */
+@media (min-width: 1024px) {
+  .grid-cols-lg-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid-cols-lg-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grid-cols-lg-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .section {
+    padding-top: var(--spacing-128);
+    padding-bottom: var(--spacing-128);
+  }
+}
