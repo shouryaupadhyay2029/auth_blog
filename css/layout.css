@@ -112,3 +112,209 @@
     padding-bottom: var(--spacing-144);
   }
 }
+
+/* ─────────────────────────────────────────────────
+   Editorial Section Header Design System
+   Consolidates label -> title -> description pattern
+───────────────────────────────────────────────── */
+.section-header-group {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin-bottom: var(--spacing-48);
+  width: 100%;
+}
+
+.section-label {
+  font-family: var(--font-heading);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: var(--spacing-12);
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 600; /* Softened for Astera Casty */
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-16);
+}
+
+.section-desc {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.68;
+  max-width: 540px;
+}
+
+/* ─────────────────────────────────────────────────
+   Premium Editorial Footer Layout
+───────────────────────────────────────────────── */
+.footer-editorial {
+  border-top: 1px solid var(--border-color);
+  background-color: #0E0E10;
+  padding: var(--spacing-64) 0 var(--spacing-48) 0;
+  margin-top: var(--spacing-128);
+  font-family: var(--font-body);
+  position: relative;
+  z-index: 10;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: var(--spacing-48);
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-32);
+  }
+}
+
+.footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+.footer-logo {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.footer-quote {
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  line-height: 1.5;
+  border-left: 2px solid var(--accent);
+  padding-left: var(--spacing-12);
+}
+
+.footer-desc {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  opacity: 0.65;
+  line-height: 1.6;
+}
+
+.footer-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+.footer-col-title {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+}
+
+.footer-links-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links-list a {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer-links-list a:hover {
+  color: var(--accent);
+}
+
+.footer-newsletter-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+.footer-newsletter-form {
+  display: flex;
+  gap: var(--spacing-8);
+  margin-top: var(--spacing-8);
+}
+
+.footer-newsletter-input {
+  flex-grow: 1;
+  background-color: var(--surface-2);
+  border: var(--border-width) solid var(--border-color);
+  padding: var(--spacing-8) var(--spacing-12);
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition-normal);
+  min-width: 0;
+}
+
+.footer-newsletter-input:focus {
+  border-color: var(--accent);
+}
+
+.footer-social-links {
+  display: flex;
+  gap: var(--spacing-16);
+  margin-top: var(--spacing-12);
+}
+
+.footer-social-link {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer-social-link:hover {
+  color: var(--accent);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  padding-top: var(--spacing-24);
+  margin-top: var(--spacing-48);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-16);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  opacity: 0.65;
+}
+
+.footer-back-to-top {
+  color: var(--accent);
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.footer-back-to-top:hover {
+  opacity: 0.8;
+}
+
+

@@ -211,7 +211,7 @@
   font-family: var(--font-body);
   font-size: 0.9375rem;
   padding: var(--spacing-12) var(--spacing-16);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   outline: none;
   transition: border-color var(--transition-normal), background-color var(--transition-normal);
 }

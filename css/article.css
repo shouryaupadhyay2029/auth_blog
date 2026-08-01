@@ -89,7 +89,14 @@
     font-size: 0.8125rem;
     color: var(--text-secondary);
     opacity: 0.65;
-    transition: opacity var(--transition-fast), color var(--transition-fast), padding var(--transition-fast);
+    border-left: 2px solid transparent;
+    padding-left: 0;
+    transition: 
+      opacity var(--transition-fast), 
+      color var(--transition-fast), 
+      padding var(--transition-fast),
+      border-color var(--transition-fast),
+      font-weight var(--transition-fast);
     display: block;
     line-height: 1.4;
   }
@@ -104,7 +111,7 @@
     opacity: 1;
     font-weight: 600;
     padding-left: var(--spacing-8);
-    border-left: 2px solid var(--accent);
+    border-left-color: var(--accent);
   }
 }
 
@@ -557,19 +564,80 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   8. INTERACTION & SCROLL REVEALS (Soft upward fade)
+   8. INTERACTION & SCROLL REVEALS (Unified Editorial Reveals)
 ───────────────────────────────────────────────────────────────── */
 .art-reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 800ms var(--ease-out-expo), transform 800ms var(--ease-out-expo);
-  will-change: opacity, transform;
+  will-change: opacity, transform, clip-path;
 }
 
-.art-reveal.revealed {
+/* Paragraphs: pure soft opacity */
+.article-body-p.art-reveal {
+  opacity: 0;
+  transform: none;
+  transition: opacity var(--dur-lg) var(--ease-out-expo);
+}
+.article-body-p.art-reveal.revealed {
+  opacity: 1;
+}
+
+/* Headings: photographic blur reveal */
+.article-body-h2.art-reveal,
+.article-body-h3.art-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(6px);
+  transition:
+    opacity var(--dur-lg) var(--ease-out-expo),
+    transform var(--dur-lg) var(--ease-out-expo),
+    filter var(--dur-lg) var(--ease-out-expo);
+}
+.article-body-h2.art-reveal.revealed,
+.article-body-h3.art-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Pull quote: slide mask out from indicator border */
+.article-pull-quote.art-reveal {
+  clip-path: inset(0 100% 0 0);
+  transform: none;
+  transition: clip-path var(--dur-xl) var(--ease-out-expo);
+}
+.article-pull-quote.art-reveal.revealed {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Figures: clip-path scale-in */
+.article-image-figure.art-reveal .article-image-wrapper {
+  clip-path: inset(8% 8% 8% 8%);
+  transition: clip-path var(--dur-xl) var(--ease-out-expo);
+}
+.article-image-figure.art-reveal.revealed .article-image-wrapper {
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+/* Staggered Editorial Lists */
+.article-content ul.art-reveal li,
+.article-content ol.art-reveal li {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--dur-md) var(--ease-out-expo),
+    transform var(--dur-md) var(--ease-out-expo);
+}
+
+.article-content ul.art-reveal.revealed li,
+.article-content ol.art-reveal.revealed li {
   opacity: 1;
   transform: translateY(0);
 }
+
+.article-content ul.art-reveal.revealed li:nth-child(1) { transition-delay: 60ms; }
+.article-content ul.art-reveal.revealed li:nth-child(2) { transition-delay: 120ms; }
+.article-content ul.art-reveal.revealed li:nth-child(3) { transition-delay: 180ms; }
+.article-content ul.art-reveal.revealed li:nth-child(4) { transition-delay: 240ms; }
+.article-content ul.art-reveal.revealed li:nth-child(5) { transition-delay: 300ms; }
 
 /* ─────────────────────────────────────────────────────────────────
    9. REDUCED MOTION SUPPORT
@@ -579,9 +647,15 @@
     transition: none !important;
   }
   
-  .art-reveal {
+  .art-reveal,
+  .article-image-figure.art-reveal .article-image-wrapper,
+  .article-content ul.art-reveal li,
+  .article-content ol.art-reveal li {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+    filter: none !important;
+    clip-path: none !important;
   }
 }
+

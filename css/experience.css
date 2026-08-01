@@ -5,9 +5,15 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 45%, rgba(12, 12, 14, 0.4) 100%);
+  /* Breathing vignette and ambient light based on document scroll */
+  background: radial-gradient(
+    circle at center, 
+    transparent calc(48% - (var(--scroll-percent, 0) * 12%)), 
+    rgba(12, 12, 14, calc(0.35 + (var(--scroll-percent, 0) * 0.25))) 100%
+  );
   pointer-events: none;
   z-index: 1; /* sits behind active text but above canvas backgrounds */
+  transition: background var(--dur-md) var(--ease-out-expo);
 }
 
 /* 2. Static Premium Paper Grain Overlay */

@@ -135,6 +135,12 @@
     state.targetRy =  normX * MAX_TILT;
     state.targetRx = -normY * MAX_TILT;
 
+    /* Track exact cursor coordinates for spotlight */
+    var mx = e.clientX - rect.left;
+    var my = e.clientY - rect.top;
+    state.el.style.setProperty('--mx', mx.toFixed(1) + 'px');
+    state.el.style.setProperty('--my', my.toFixed(1) + 'px');
+
     startTick(state);
   }
 

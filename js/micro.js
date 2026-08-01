@@ -589,6 +589,30 @@
   }
 
   /* ─────────────────────────────────────────────
+     9. SCROLL ATMOSPHERE & DEPTH
+  ───────────────────────────────────────────── */
+  function initScrollAtmosphere() {
+    var doc = document.documentElement;
+    var rafId = null;
+    
+    function updateScrollAtmosphere() {
+      var scrollTop = window.scrollY || doc.scrollTop;
+      var docHeight = doc.scrollHeight - window.innerHeight;
+      var scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
+      doc.style.setProperty('--scroll-percent', scrollPercent.toFixed(4));
+      rafId = null;
+    }
+    
+    window.addEventListener('scroll', function () {
+      if (rafId === null) {
+        rafId = requestAnimationFrame(updateScrollAtmosphere);
+      }
+    }, { passive: true });
+    
+    updateScrollAtmosphere();
+  }
+
+  /* ─────────────────────────────────────────────
      INIT
   ───────────────────────────────────────────── */
   function init() {
@@ -602,6 +626,7 @@
     initNavUnderline();
     initParallax();
     initScrollIndicator();
+    initScrollAtmosphere();
   }
 
   if (document.readyState === 'loading') {

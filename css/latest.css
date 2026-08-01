@@ -25,33 +25,6 @@
   max-width: 540px;
 }
 
-.latest-section-label {
-  font-family: var(--font-heading);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: var(--spacing-12);
-}
-
-.latest-section-title {
-  font-family: var(--font-heading);
-  font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-16);
-}
-
-.latest-section-desc {
-  font-size: 0.9375rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-
 .latest-header-action {
   flex-shrink: 0;
 }

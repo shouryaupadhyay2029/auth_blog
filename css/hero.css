@@ -39,15 +39,8 @@
   text-align: left;
 }
 
-.hero-eyebrow {
-  font-family: var(--font-heading);
-  font-size: 0.6875rem; /* Slightly smaller, more refined eyebrow text */
-  font-weight: 700;
-  color: var(--accent); /* Emerald eyebrow */
-  letter-spacing: 0.16em; /* Increased tracking */
-  text-transform: uppercase;
-  margin-bottom: var(--spacing-16);
-}
+/* .hero-eyebrow is now standardized to .section-label */
+
 
 .hero-heading {
   display: flex;

@@ -42,25 +42,38 @@
   --spacing-80: 5rem;     /* 80px */
   --spacing-96: 6rem;     /* 96px */
   --spacing-128: 8rem;    /* 128px */
+  --spacing-144: 9rem;    /* 144px */
 
   /* Layout Boundaries */
   --container-width: 1280px;
 
   /* Shadows (Tuned for Dark Surfaces) */
-  --shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.5), 0 4px 8px -2px rgba(0, 0, 0, 0.3);
+  --shadow-level-0: none;
+  --shadow-level-1: 0 2px 8px -2px rgba(0, 0, 0, 0.35), 0 1px 3px -1px rgba(0, 0, 0, 0.2);
+  --shadow-level-2: 0 8px 24px -8px rgba(0, 0, 0, 0.5), 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+  --shadow-level-3: 0 20px 48px -12px rgba(0, 0, 0, 0.65), 0 8px 16px -4px rgba(0, 0, 0, 0.45);
+  --shadow: var(--shadow-level-1);
+  --shadow-lg: var(--shadow-level-2);
+
+  /* Border System */
+  --border-width: 1px;
+  --border-color: rgba(255, 255, 255, 0.05);
+  --border-color-hover: rgba(255, 255, 255, 0.12);
+  --border-color-accent: rgba(16, 185, 129, 0.25);
 
   /* Border Radii */
   --radius-sm: 4px;
   --radius: 8px;
   --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-full: 9999px;
 
   /* Transitions */
-  --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-slow: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-premium-out: cubic-bezier(0.25, 1, 0, 1);
+  --transition-fast: 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-normal: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-slow: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-premium: 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-premium-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-button-interactive: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Fonts */

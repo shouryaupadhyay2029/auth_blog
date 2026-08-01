@@ -243,6 +243,9 @@
     rotateY(var(--ry, 0deg))
     translateY(-4px)
     scale(1.01) !important;
+  background-image: 
+    radial-gradient(circle 240px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.035), transparent 100%),
+    radial-gradient(circle 120px at var(--mx, 50%) var(--my, 50%), rgba(16, 185, 129, 0.045), transparent 100%) !important;
 }
 
 /* Paper stack compresses on hover — sheets slide into alignment */
@@ -369,14 +372,11 @@
 /* Base border for all cards */
 .featured-card,
 .featured-large-card,
-.featured-small-card {
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
-}
-
+.featured-small-card,
 .latest-feature-card,
 .latest-standard-card,
 .latest-compact-card {
-  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border: var(--border-width) solid var(--border-color) !important;
 }
 
 /* Hover border brightens */
@@ -386,7 +386,7 @@
 .latest-feature-card:hover,
 .latest-standard-card:hover,
 .latest-compact-card:hover {
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: var(--border-color-hover) !important;
 }
 
 /* ─────────────────────────────────────────────────────────────────

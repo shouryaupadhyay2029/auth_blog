@@ -67,4 +67,74 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+
+  // Simulated interactive search state engine
+  if (desktopSearch) {
+    const dropdown = document.getElementById('search-dropdown');
+    if (dropdown) {
+      const statusDiv = document.getElementById('search-status');
+      const suggestionContent = dropdown.querySelector('.search-dropdown-section:first-child');
+      const taxonomyContent = dropdown.querySelector('.search-dropdown-section:last-of-type');
+      let debounceTimer = null;
+
+      desktopSearch.addEventListener('input', (e) => {
+        const val = e.target.value.trim().toLowerCase();
+        
+        clearTimeout(debounceTimer);
+        if (!val) {
+          statusDiv.style.display = 'none';
+          suggestionContent.style.display = 'block';
+          taxonomyContent.style.display = 'block';
+          return;
+        }
+
+        // Show loader state
+        statusDiv.style.display = 'block';
+        statusDiv.innerHTML = '<div class="search-dropdown-status-text skeleton" style="height: 18px; width: 60%; margin: 8px 0;">Searching...</div>';
+        suggestionContent.style.display = 'none';
+        taxonomyContent.style.display = 'none';
+
+        debounceTimer = setTimeout(() => {
+          // Query simulation
+          let results = [];
+          if (val.includes('rust') || val.includes('queue')) {
+            results.push({
+              title: 'Building a Distributed Message Queue from Scratch in Rust',
+              url: 'article.html'
+            });
+          }
+          if (val.includes('postgre') || val.includes('sql') || val.includes('database')) {
+            results.push({
+              title: 'Optimizing Read Performance on PostgreSQL Databases',
+              url: 'article.html'
+            });
+          }
+          if (val.includes('design') || val.includes('token') || val.includes('typograph') || val.includes('css')) {
+            results.push({
+              title: 'Stretching Tokens: Fluid Typography in CSS',
+              url: 'article.html'
+            });
+          }
+
+          if (results.length > 0) {
+            statusDiv.innerHTML = `
+              <span class="search-dropdown-label">Search Results (${results.length})</span>
+              <ul class="search-dropdown-list">
+                ${results.map(r => `<li><a href="${r.url}" class="search-suggest-item" style="font-weight:600; color:var(--accent);">${r.title}</a></li>`).join('')}
+              </ul>
+            `;
+          } else {
+            // No results empty state
+            statusDiv.innerHTML = `
+              <div class="search-dropdown-status-text" style="text-align: center; padding: var(--spacing-8) 0;">
+                <span style="font-size: 1.5rem; display: block; margin-bottom: var(--spacing-8);">🔍</span>
+                <strong>No results found</strong>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">We couldn't find any articles matching "${e.target.value}". Try another keyword.</p>
+              </div>
+            `;
+          }
+        }, 400); // 400ms loading simulator
+      });
+    }
+  }
 });
