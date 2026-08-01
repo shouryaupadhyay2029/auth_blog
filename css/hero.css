@@ -1,12 +1,15 @@
 /* BlogAuth V1 hero.css — Polished Premium Edition */
 
-/* 1. Hero Section Layout Wrapper */
 .hero-section {
   position: relative;
   width: 100%;
-  padding-top: calc(var(--spacing-96) + 64px); /* Spacious vertical rhythm */
-  padding-bottom: var(--spacing-128); /* Increased from spacing-96 */
-  z-index: 2; /* Sits above the body background overlay */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-top: calc(var(--spacing-96) + 40px); /* Adjust to center vertically with navbar */
+  padding-bottom: var(--spacing-64);
+  z-index: 1; /* Stacks below the sliding featured-section */
   overflow: hidden; /* Contain radial backdrop */
 }
 

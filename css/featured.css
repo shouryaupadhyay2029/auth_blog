@@ -4,8 +4,11 @@
 .featured-section {
   position: relative;
   width: 100%;
-  padding-bottom: var(--spacing-128); /* Increased from spacing-96 */
-  z-index: 2;
+  background-color: var(--background);
+  box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.4); /* soft shadow on top edge */
+  padding-top: var(--spacing-128);
+  padding-bottom: var(--spacing-128);
+  z-index: 10; /* high z-index to overlay pinned hero */
 }
 
 /* 2. Asymmetric Editorial Divider (delegated to base.css) */
