@@ -518,3 +518,28 @@
     transform: none !important;
   }
 }
+
+/* ─────────────────────────────────────────────────
+   Sprint 12: Card Spacing & Overlap Calibration
+   - Prevents top-right metadata clipping by chamfer notch.
+   - Adjusts vertical metrics to clear serif ascenders/badges.
+───────────────────────────────────────────────── */
+.card-read-time,
+.card-date,
+.lfc-date,
+.lsc-date,
+.lcc-read-time {
+  margin-right: calc(var(--chamfer) + 6px) !important;
+}
+
+.card-title,
+.lfc-title,
+.lsc-title,
+.lcc-title {
+  margin-top: var(--spacing-12) !important;
+}
+
+.lfc-editorial-badge {
+  margin-bottom: var(--spacing-12) !important;
+}
+

@@ -14,8 +14,8 @@
 .section {
   position: relative;
   width: 100%;
-  padding-top: var(--spacing-64);
-  padding-bottom: var(--spacing-64);
+  padding-top: var(--spacing-80); /* Increased from spacing-64 */
+  padding-bottom: var(--spacing-80);
   overflow: hidden;
 }
 
@@ -82,8 +82,8 @@
 /* Tablet (768px+) */
 @media (min-width: 768px) {
   .section {
-    padding-top: var(--spacing-96);
-    padding-bottom: var(--spacing-96);
+    padding-top: var(--spacing-112); /* Increased from spacing-96 */
+    padding-bottom: var(--spacing-112);
   }
   
   .container {
@@ -108,7 +108,7 @@
 /* Desktop (1440px+) */
 @media (min-width: 1440px) {
   .section {
-    padding-top: var(--spacing-128);
-    padding-bottom: var(--spacing-128);
+    padding-top: var(--spacing-144); /* Increased from spacing-128 */
+    padding-bottom: var(--spacing-144);
   }
 }

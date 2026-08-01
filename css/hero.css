@@ -5,8 +5,23 @@
   position: relative;
   width: 100%;
   padding-top: calc(var(--spacing-96) + 64px); /* Spacious vertical rhythm */
-  padding-bottom: var(--spacing-96);
+  padding-bottom: var(--spacing-128); /* Increased from spacing-96 */
   z-index: 2; /* Sits above the body background overlay */
+  overflow: hidden; /* Contain radial backdrop */
+}
+
+/* Layer 2: Radial Backdrop Gradient */
+.hero-backdrop {
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  width: 140vw;
+  height: 140vh;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.045) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform;
 }
 
 .hero-grid {
@@ -37,8 +52,8 @@
 .hero-heading {
   display: flex;
   flex-direction: column;
-  line-height: 1.05;
-  margin-bottom: var(--spacing-24);
+  line-height: 1.15; /* Updated from 1.05 to match calibrated H1 */
+  margin-bottom: var(--spacing-32); /* Increased from spacing-24 */
 }
 
 .hero-heading span {
@@ -46,45 +61,142 @@
 }
 
 .hero-paragraph {
-  max-width: 520px; /* Optimal reading character boundary */
+  max-width: 460px; /* Reduced max-width for premium editorial line length */
   font-size: 1.0625rem;
   color: var(--text-secondary);
-  line-height: 1.7; /* Increased line spacing for readability */
-  margin-bottom: var(--spacing-32);
+  line-height: 1.75; /* Increased line spacing for readability */
+  margin-bottom: var(--spacing-40); /* Increased from spacing-32 */
 }
 
 /* Button Groupings */
 .hero-actions {
   display: flex;
-  gap: var(--spacing-16);
-  margin-bottom: var(--spacing-48);
+  gap: var(--spacing-20); /* Increased from spacing-16 */
+  margin-bottom: var(--spacing-64); /* Increased from spacing-48 */
 }
 
+/* Primary Button Polish */
+.hero-actions .btn-primary {
+  transition: 
+    background-color 250ms var(--ease-button-interactive),
+    border-color 250ms var(--ease-button-interactive),
+    color 250ms var(--ease-button-interactive),
+    transform 250ms var(--ease-button-interactive),
+    box-shadow 250ms var(--ease-button-interactive),
+    filter 250ms var(--ease-button-interactive) !important;
+}
+
+.hero-actions .btn-primary:hover {
+  transform: translateY(-2px) !important;
+  filter: brightness(1.05); /* Brighten 5% */
+  box-shadow: 
+    0 8px 24px rgba(16, 185, 129, 0.22),
+    inset 0 1px rgba(255, 255, 255, 0.2) !important; /* Inner highlight + deeper shadow */
+}
+
+.hero-actions .btn-primary .btn-arrow {
+  display: inline-block;
+  transition: transform 250ms var(--ease-button-interactive);
+}
+
+.hero-actions .btn-primary:hover .btn-arrow {
+  transform: translateX(4px); /* Arrow slides 4px */
+}
+
+.hero-actions .btn-primary:active {
+  transform: translateY(-1px) scale(0.99) !important; /* Compress 1px */
+  transition-duration: 80ms !important;
+}
+
+/* Secondary Button Polish */
 .btn-secondary {
   background-color: transparent;
-  color: var(--text-primary);
+  color: var(--text-secondary);
   border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: 
+    background-color 250ms var(--ease-button-interactive),
+    border-color 250ms var(--ease-button-interactive),
+    color 250ms var(--ease-button-interactive),
+    transform 250ms var(--ease-button-interactive),
+    box-shadow 250ms var(--ease-button-interactive) !important;
+}
+
+.btn-secondary .btn-text {
+  display: inline-block;
+  position: relative;
+  transition: transform 250ms var(--ease-button-interactive), color 250ms var(--ease-button-interactive);
+}
+
+/* Editorial Underline grows left to right */
+.btn-secondary .btn-text::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--text-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 250ms var(--ease-button-interactive);
 }
 
 .btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.01);
+  border-color: rgba(255, 255, 255, 0.2) !important; /* border brightens slightly */
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover .btn-text {
+  transform: translateX(2px); /* text shifts 2px */
+}
+
+.btn-secondary:hover .btn-text::after {
+  transform: scaleX(1); /* underline grows left to right */
+}
+
+.btn-secondary:active {
+  transform: scale(0.985) !important; /* soft compression */
+  transition-duration: 80ms !important;
 }
 
 /* 3. Left Column: Dividers & Statistics Panel */
 .hero-stats {
   display: flex;
-  gap: var(--spacing-48);
+  gap: var(--spacing-64); /* Increased from spacing-48 */
   border-top: 1px solid var(--border);
-  padding-top: var(--spacing-32);
+  padding-top: var(--spacing-40); /* Increased from spacing-32 */
+  margin-top: var(--spacing-16); /* Added margin-top to separate further from buttons */
   width: 100%;
-  max-width: 520px;
+  max-width: 460px;
 }
 
 .stat-item {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
+  position: relative;
+  flex: 1;
+}
+
+/* Stat item hover microinteractions */
+.stat-item::after {
+  content: '';
+  position: absolute;
+  top: -33px; /* aligns with the hero-stats border-top */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 300ms var(--ease-premium-out);
+}
+
+.stat-item:hover::after {
+  transform: scaleX(1); /* top border expansions */
 }
 
 .stat-value {
@@ -93,6 +205,13 @@
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  will-change: transform, opacity;
+  transition: transform 250ms var(--ease-button-interactive), color 250ms var(--ease-button-interactive);
+}
+
+.stat-item:hover .stat-value {
+  transform: translateY(-2px); /* number lifts 2px */
+  color: var(--accent);
 }
 
 .stat-label {
@@ -100,6 +219,7 @@
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  will-change: transform, opacity;
 }
 
 /* 4. Right Column: Featured card wrapper & container */
@@ -118,11 +238,50 @@
 .featured-card {
   width: 100%;
   background-color: var(--surface);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
   padding: var(--spacing-32) var(--spacing-36);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-24);
+  position: relative;
+  /* Premium layered border + inner shadow */
+  box-shadow: 
+    calc(var(--stack-offset) * 2) calc(var(--stack-offset) * 2) 0 0 rgba(255,255,255,0.012),
+    0 12px 32px -8px rgba(0, 0, 0, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 0.03) !important;
+}
+
+/* Enhance chamfer notch on hero card */
+.featured-card {
+  --chamfer: 20px; /* slightly more defined top-right corner cut */
+}
+
+/* Tilt and translateY on hover override */
+.featured-card:hover {
+  transform:
+    perspective(var(--card-perspective))
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg))
+    translateY(-6px) !important; /* lifts 6px */
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  box-shadow: 
+    1px 1px 0 0 rgba(255,255,255,0.01),
+    0 20px 48px -12px rgba(0, 0, 0, 0.65),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Metadata opacity fade */
+.featured-card .card-read-time,
+.featured-card .card-excerpt,
+.featured-card .author-role {
+  opacity: 0.6;
+  transition: opacity 250ms var(--ease-button-interactive);
+}
+
+.featured-card:hover .card-read-time,
+.featured-card:hover .card-excerpt,
+.featured-card:hover .author-role {
+  opacity: 0.95; /* metadata opacity increases on hover */
 }
 
 

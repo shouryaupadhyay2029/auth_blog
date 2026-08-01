@@ -112,7 +112,7 @@
 .nav-links {
   display: flex;
   list-style: none;
-  gap: var(--spacing-16);
+  gap: var(--spacing-24); /* Increased from spacing-16 */
   counter-reset: nav-counter; /* Initialize CSS numbering counter */
 }
 
@@ -200,7 +200,7 @@
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: var(--spacing-16);
+  gap: var(--spacing-24); /* Increased from spacing-16 */
 }
 
 .search-bar {
@@ -296,7 +296,7 @@
 .user-actions {
   display: flex;
   align-items: center;
-  gap: var(--spacing-12);
+  gap: var(--spacing-16); /* Increased from spacing-12 */
 }
 
 /* Custom premium styling for navbar buttons */

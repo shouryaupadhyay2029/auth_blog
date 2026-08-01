@@ -6,7 +6,7 @@
 .latest-section {
   position: relative;
   width: 100%;
-  padding-bottom: var(--spacing-96);
+  padding-bottom: var(--spacing-128); /* Increased from spacing-96 */
   z-index: 2;
 }
 
@@ -17,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: var(--spacing-48);
+  margin-bottom: var(--spacing-64); /* Increased from spacing-48 */
   width: 100%;
 }
 
@@ -93,7 +93,7 @@
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   grid-template-rows: auto auto;
-  gap: var(--spacing-32) var(--spacing-40);
+  gap: var(--spacing-48) var(--spacing-64); /* Increased from spacing-32 spacing-40 */
   align-items: start;
 }
 
@@ -109,7 +109,7 @@
   grid-row: 1 / 2;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-20);
+  gap: var(--spacing-24); /* Increased from spacing-20 */
 }
 
 /* Compact cards span full-width bottom row */
@@ -118,8 +118,8 @@
   grid-row: 2 / 3;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-24);
-  padding-top: var(--spacing-24);
+  gap: var(--spacing-32); /* Increased from spacing-24 */
+  padding-top: var(--spacing-40); /* Increased from spacing-24 */
   border-top: 1px solid var(--border);
 }
 
@@ -130,10 +130,10 @@
   position: relative;
   background-color: var(--surface);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: var(--spacing-48);
+  padding: var(--spacing-56) var(--spacing-64); /* Increased from spacing-48 */
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-24);
+  gap: var(--spacing-32); /* Increased from spacing-24 */
   height: 100%;
   cursor: pointer;
   /* Shape, hover, ::before/::after delegated to cards.css Sprint 9 */
@@ -203,7 +203,8 @@
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.04);
-  padding-top: var(--spacing-24);
+  padding-top: var(--spacing-32); /* Increased from spacing-24 */
+  margin-top: var(--spacing-16); /* Added margin-top */
 }
 
 .lfc-author {
@@ -276,10 +277,10 @@
   position: relative;
   background-color: var(--surface);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: var(--spacing-28) var(--spacing-32);
+  padding: var(--spacing-32) var(--spacing-40); /* Increased from spacing-28 spacing-32 */
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-12);
+  gap: var(--spacing-16); /* Increased from spacing-12 */
   cursor: pointer;
   /* Shape, hover, ::before/::after delegated to cards.css Sprint 9 */
 }
@@ -332,8 +333,8 @@
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.04);
-  padding-top: var(--spacing-12);
-  margin-top: var(--spacing-4);
+  padding-top: var(--spacing-16); /* Increased from spacing-12 */
+  margin-top: var(--spacing-8); /* Increased from spacing-4 */
 }
 
 .lsc-author-name {
@@ -374,8 +375,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-12);
-  padding: var(--spacing-20) var(--spacing-24);
+  gap: var(--spacing-16); /* Increased from spacing-12 */
+  padding: var(--spacing-24) var(--spacing-32); /* Increased from spacing-20 spacing-24 */
   background-color: var(--surface);
   border: 1px solid rgba(255, 255, 255, 0.04);
   cursor: pointer;
@@ -577,7 +578,7 @@
   }
 
   .latest-feature-card {
-    padding: var(--spacing-40);
+    padding: var(--spacing-48) var(--spacing-40); /* Recalibrated for tablet spacing */
   }
 }
 
@@ -635,8 +636,8 @@
   }
 
   .latest-feature-card {
-    padding: var(--spacing-32) var(--spacing-28);
-    gap: var(--spacing-20);
+    padding: var(--spacing-40) var(--spacing-32); /* Recalibrated for mobile spacing */
+    gap: var(--spacing-24);
   }
 
   .lfc-title {

@@ -4,7 +4,7 @@
 .topics-section {
   position: relative;
   width: 100%;
-  padding-bottom: var(--spacing-96);
+  padding-bottom: var(--spacing-128); /* Increased from spacing-96 */
   z-index: 2;
 }
 
@@ -12,7 +12,7 @@
 .topics-grid {
   display: grid;
   grid-template-columns: 0.3fr 0.7fr;
-  gap: var(--spacing-64);
+  gap: var(--spacing-80); /* Increased from spacing-64 */
   align-items: start;
 }
 
@@ -31,7 +31,7 @@
 
 .topic-row {
   border-bottom: 1px solid var(--border);
-  padding: var(--spacing-24) 0;
+  padding: var(--spacing-32) 0; /* Increased from spacing-24 */
   cursor: pointer;
   display: flex;
   flex-direction: column;

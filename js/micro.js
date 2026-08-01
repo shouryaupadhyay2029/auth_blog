@@ -149,30 +149,66 @@
     t = 320;
 
     /* Eyebrow */
-    revealClipInner(eyebrow, t);     t += 80;
+    revealClipInner(eyebrow, t);     t += 120;
 
     /* Heading lines */
     heroLines.forEach(function (span) {
-      revealClipInner(span, t);      t += 80;
+      revealClipInner(span, t);      t += 120;
     });
 
     /* Paragraph */
-    reveal(heroPara, t);             t += 80;
+    reveal(heroPara, t);             t += 120;
 
     /* Buttons */
-    reveal(heroActions, t);          t += 80;
+    reveal(heroActions, t);          t += 120;
 
-    /* Stats — stagger */
-    statItems.forEach(function (item) {
-      reveal(item, t);               t += 60;
+    /* Stats Counting Sequence */
+    var statTargets = [
+      { target: 12, suffix: 'K+' },
+      { target: 2.5, suffix: 'K+' },
+      { target: 28, suffix: '+' }
+    ];
+
+    statItems.forEach(function (item, index) {
+      var valEl = item.querySelector('.stat-value');
+      var lblEl = item.querySelector('.stat-label');
+      
+      if (valEl) {
+        valEl.style.opacity = '0';
+        valEl.style.transform = 'translateY(12px)';
+        valEl.style.transition = 'opacity 600ms var(--ease-premium-out), transform 600ms var(--ease-premium-out)';
+      }
+      if (lblEl) {
+        lblEl.style.opacity = '0';
+        lblEl.style.transform = 'translateY(8px)';
+        lblEl.style.transition = 'opacity 600ms var(--ease-premium-out), transform 600ms var(--ease-premium-out)';
+      }
+
+      setTimeout(function () {
+        if (valEl) {
+          valEl.style.opacity = '1';
+          valEl.style.transform = 'translateY(0)';
+        }
+        var targetData = statTargets[index];
+        if (targetData && valEl) {
+          animateStatCounting(valEl, 0, targetData.target, 1200, targetData.suffix, function () {
+            if (lblEl) {
+              lblEl.style.opacity = '0.6';
+              lblEl.style.transform = 'translateY(0)';
+            }
+          });
+        }
+      }, t + (index * 100));
     });
 
+    t += 300;
+
     /* Card — overlaps with stats */
-    var cardDelay = 600;
+    var cardDelay = 700;
     if (heroCardWrapper) reveal(heroCardWrapper, cardDelay);
 
     /* First divider — after hero content */
-    if (firstDivider) reveal(firstDivider, 900);
+    if (firstDivider) reveal(firstDivider, 1100);
   }
 
   /* ─────────────────────────────────────────────
@@ -449,6 +485,110 @@
   }
 
   /* ─────────────────────────────────────────────
+     STATS COUNTING ANIMATION HELPER
+  ───────────────────────────────────────────── */
+  function animateStatCounting(el, start, end, duration, suffix, onComplete) {
+    var startTime = null;
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      // Easing: cubicBezier out-expo equivalent
+      var easeProgress = 1 - Math.pow(2, -10 * progress);
+      var currentValue = easeProgress * (end - start) + start;
+      
+      if (end % 1 === 0) {
+        el.textContent = Math.floor(currentValue) + (suffix || '');
+      } else {
+        el.textContent = currentValue.toFixed(1) + (suffix || '');
+      }
+      
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        el.textContent = end + (suffix || '');
+        if (onComplete) onComplete();
+      }
+    }
+    window.requestAnimationFrame(step);
+  }
+
+  /* ─────────────────────────────────────────────
+     HERO PARALLAX DRIFT (Card and Radial Background)
+  ───────────────────────────────────────────── */
+  function initParallax() {
+    if (REDUCED) return;
+    
+    var heroCardWrapper = document.querySelector('.featured-card-wrapper');
+    var heroBackdrop = document.querySelector('.hero-backdrop');
+    
+    if (!heroCardWrapper && !heroBackdrop) return;
+    
+    var rafId = null;
+    
+    window.addEventListener('scroll', function () {
+      if (rafId) return;
+      rafId = requestAnimationFrame(function () {
+        rafId = null;
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (heroCardWrapper) {
+          var cardOffset = scrollY * 0.22; // 0.78x relative scroll rate
+          heroCardWrapper.style.transform = 'translate3d(0, ' + cardOffset + 'px, 0)';
+        }
+        
+        if (heroBackdrop) {
+          var backdropOffset = scrollY * 0.55; // 0.45x relative scroll rate
+          heroBackdrop.style.transform = 'translate3d(-50%, calc(-50% + ' + backdropOffset + 'px), 0)';
+        }
+      });
+    }, { passive: true });
+  }
+
+  /* ─────────────────────────────────────────────
+     SCROLL INDICATOR (Divider line progress)
+  ───────────────────────────────────────────── */
+  function initScrollIndicator() {
+    if (REDUCED) return;
+    
+    var divider = document.querySelector('.editorial-divider');
+    if (!divider) return;
+    
+    var line = divider.querySelector('.divider-line');
+    if (!line) return;
+    
+    // Override the CSS animation
+    line.style.transition = 'none';
+    
+    var rafId = null;
+    
+    function updateIndicator() {
+      var rect = divider.getBoundingClientRect();
+      var viewportHeight = window.innerHeight;
+      
+      var startY = viewportHeight;
+      var endY = viewportHeight * 0.4;
+      
+      var progress = (startY - rect.top) / (startY - endY);
+      progress = Math.max(0, Math.min(1, progress));
+      
+      // Eased progress for fluid transition
+      var easedProgress = progress * (2 - progress);
+      
+      line.style.transform = 'scaleX(' + easedProgress + ')';
+    }
+    
+    window.addEventListener('scroll', function () {
+      if (rafId) return;
+      rafId = requestAnimationFrame(function () {
+        rafId = null;
+        updateIndicator();
+      });
+    }, { passive: true });
+    
+    updateIndicator();
+  }
+
+  /* ─────────────────────────────────────────────
      INIT
   ───────────────────────────────────────────── */
   function init() {
@@ -460,6 +600,8 @@
     initProximity();
     initCardClickthrough();
     initNavUnderline();
+    initParallax();
+    initScrollIndicator();
   }
 
   if (document.readyState === 'loading') {

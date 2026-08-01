@@ -145,16 +145,34 @@
 .m-clip-inner {
   display: block;
   opacity: 0;
-  transform: translateY(20px);
-  will-change: opacity, transform;
+  transform: translateY(24px);
+  filter: blur(8px);
+  will-change: opacity, transform, filter;
 }
 
 .m-clip-inner.m-visible {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0px);
   transition:
-    opacity var(--dur-xl) var(--ease-out-expo),
-    transform var(--dur-xl) var(--ease-out-expo);
+    opacity 900ms var(--ease-premium-out),
+    transform 900ms var(--ease-premium-out),
+    filter 900ms var(--ease-premium-out);
+}
+
+/* Premium paragraph entry custom transition */
+.hero-paragraph.m-init {
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: opacity, transform;
+}
+
+.hero-paragraph.m-init.m-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 900ms var(--ease-premium-out),
+    transform 900ms var(--ease-premium-out);
 }
 
 /* Hero stat items — fade up separately */
