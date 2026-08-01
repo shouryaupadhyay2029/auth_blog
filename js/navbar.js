@@ -35,20 +35,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const allLinks = document.querySelectorAll('.nav-links li a');
   allLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-      // Mock page selection behavior for clean transitions
-      e.preventDefault();
+      const href = link.getAttribute('href');
+      
+      // Only prevent default if it's a dummy # or in-page anchor
+      if (!href || href === '#' || href.startsWith('#')) {
+        e.preventDefault();
 
-      // Clear all active states on list items
-      const parentList = link.closest('.nav-links');
-      const listItems = parentList.querySelectorAll('li');
-      listItems.forEach(item => item.classList.remove('active'));
+        // Clear all active states on list items
+        const parentList = link.closest('.nav-links');
+        const listItems = parentList.querySelectorAll('li');
+        listItems.forEach(item => item.classList.remove('active'));
 
-      // Mark clicked item active
-      link.parentElement.classList.add('active');
+        // Mark clicked item active
+        link.parentElement.classList.add('active');
 
-      // If in mobile menu, auto-close drawer
-      if (parentList.closest('.mobile-drawer')) {
-        closeDrawer();
+        // If in mobile menu, auto-close drawer
+        if (parentList.closest('.mobile-drawer')) {
+          closeDrawer();
+        }
       }
     });
   });
