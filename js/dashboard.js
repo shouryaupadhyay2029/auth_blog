@@ -62,11 +62,94 @@
   }
 
   /* ─────────────────────────────────────────────
-     4. POPULATE DASHBOARD WITH REAL API DATA
+     4. POPULATE DASHBOARD WITH REAL API DATA & STATES
   ───────────────────────────────────────────── */
+  function getDraftSkeletonHtml() {
+    return (
+      '<div class="draft-item skeleton-bg sk-card" style="height:80px; margin-bottom:var(--spacing-16); padding:var(--spacing-16); box-sizing:border-box;">' +
+        '<div class="skeleton-bg sk-title" style="height:16px; width:50%; margin-bottom:8px;"></div>' +
+        '<div class="skeleton-bg sk-meta" style="height:12px; width:30%;"></div>' +
+      '</div>'
+    );
+  }
+
+  function getTableSkeletonHtml() {
+    return (
+      '<tr>' +
+        '<td colspan="6" style="padding:var(--spacing-16);">' +
+          '<div class="skeleton-bg" style="height:20px; width:90%; margin-bottom:12px;"></div>' +
+          '<div class="skeleton-bg" style="height:20px; width:80%; margin-bottom:12px;"></div>' +
+          '<div class="skeleton-bg" style="height:20px; width:85%;"></div>' +
+        '</td>' +
+      '</tr>'
+    );
+  }
+
+  function renderEmptyState(container, title, message, type) {
+    container.innerHTML = 
+      '<div class="premium-empty-card" style="margin-top:var(--spacing-16);">' +
+        '<div class="pec-illustration ' + type + '"></div>' +
+        '<div class="pec-title">' + title + '</div>' +
+        '<div class="pec-desc">' + message + '</div>' +
+        (type === 'drafts' ? '<button class="btn btn-secondary btn-sm" id="btn-create-first-draft" type="button">Create Article</button>' : '') +
+      '</div>';
+    
+    // Bind click trigger to new draft if exists
+    var createDraftBtn = container.querySelector('#btn-create-first-draft');
+    if (createDraftBtn) {
+      createDraftBtn.addEventListener('click', function () {
+        window.location.href = 'editor.html';
+      });
+    }
+  }
+
+  function renderErrorState(container, onRetry) {
+    container.innerHTML = 
+      '<div class="premium-empty-card" style="border-color:rgba(239,68,68,0.15); margin-top:var(--spacing-16);">' +
+        '<div class="pec-title" style="color:#ef4444;">Connection Interrupted</div>' +
+        '<div class="pec-desc">We encountered an issue loading workspace data from the server.</div>' +
+        '<button class="btn btn-secondary btn-sm" id="btn-retry-load" type="button">Retry Connection</button>' +
+      '</div>';
+    
+    var retryBtn = container.querySelector('#btn-retry-load');
+    if (retryBtn && onRetry) {
+      retryBtn.addEventListener('click', onRetry);
+    }
+  }
+
+  function createSidebarCard(title, className, itemsHtml) {
+    var sidebar = document.querySelector('.dashboard-actions-sidebar');
+    if (!sidebar) return;
+
+    // Check if card already exists
+    var existingCard = sidebar.querySelector('.' + className);
+    if (existingCard) {
+      existingCard.remove();
+    }
+
+    var card = document.createElement('div');
+    card.className = 'actions-card dash-reveal revealed ' + className;
+    card.style.marginTop = 'var(--spacing-24)';
+    card.innerHTML = 
+      '<h4 class="actions-card-title">' + title + '</h4>' +
+      '<div class="card-inner-list" style="margin-top:var(--spacing-16); display:flex; flex-direction:column; gap:var(--spacing-12);">' +
+        itemsHtml +
+      '</div>';
+    
+    sidebar.appendChild(card);
+  }
+
   function populateDashboard() {
-    // If not authenticated, let auth-service redirect
     if (!window.StorageHelper || !window.StorageHelper.isAuthenticated()) return;
+
+    // Load active user profile meta
+    var activeUser = window.StorageHelper.getUser();
+    if (activeUser) {
+      var welcomeTitle = document.querySelector('.welcome-title');
+      if (welcomeTitle) {
+        welcomeTitle.textContent = 'Welcome back, ' + (activeUser.username || 'Writer') + '.';
+      }
+    }
 
     // Set Welcome Header Date
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -76,21 +159,23 @@
       dateQuote.innerHTML = '“Clear design enables clear thinking.” — ' + todayStr;
     }
 
-    // Load active user metadata info
-    var activeUser = window.StorageHelper.getUser();
-    if (activeUser) {
-      var welcomeTitle = document.querySelector('.welcome-title');
-      if (welcomeTitle) {
-        welcomeTitle.textContent = 'Welcome back, ' + (activeUser.name || activeUser.username) + '.';
-      }
+    // Initial Loaders
+    var draftContainer = document.querySelector('.draft-list');
+    var tableBody = document.querySelector('.published-table tbody');
+
+    if (draftContainer) {
+      draftContainer.innerHTML = getDraftSkeletonHtml() + getDraftSkeletonHtml();
+    }
+    if (tableBody) {
+      tableBody.innerHTML = getTableSkeletonHtml();
     }
 
-    // Hit the central API dashboard statistics endpoint
+    // Fetch workspace parameters from backend API
     window.CentralAPI.getDashboardData()
       .then(function (data) {
         if (!data) return;
 
-        // Populate metrics values
+        // 1. Populate metrics values
         var metrics = document.querySelectorAll('.stat-card-val');
         if (metrics.length >= 4) {
           metrics[0].textContent = data.publishedCount || '0';
@@ -99,65 +184,155 @@
           metrics[3].textContent = data.followersCount || '0';
         }
 
-        // Populate Draft list
-        var draftContainer = document.querySelector('.draft-list');
-        if (draftContainer && data.drafts && data.drafts.length > 0) {
-          draftContainer.innerHTML = '';
-          data.drafts.forEach(function (draft) {
-            var item = document.createElement('div');
-            item.className = 'draft-item';
-            item.innerHTML = 
-              '<div class="draft-info">' +
-                '<span class="draft-title">' + draft.title + '</span>' +
-                '<div class="draft-meta">' +
-                  '<span class="status-chip-draft">' + (draft.category || 'General') + '</span>' +
-                  '<span>Edited ' + new Date(draft.updatedAt).toLocaleDateString() + '</span>' +
+        // 2. Populate Draft list
+        if (draftContainer) {
+          if (!data.drafts || data.drafts.length === 0) {
+            renderEmptyState(draftContainer, 'No drafts available', 'Your active writing projects will appear here once saved.', 'drafts');
+          } else {
+            draftContainer.innerHTML = '';
+            data.drafts.forEach(function (draft) {
+              var item = document.createElement('div');
+              item.className = 'draft-item';
+              item.innerHTML = 
+                '<div class="draft-info">' +
+                  '<span class="draft-title" style="cursor:pointer;" onclick="window.location.href=\'editor.html?id=' + draft._id + '\'">' + draft.title + '</span>' +
+                  '<div class="draft-meta">' +
+                    '<span class="status-chip-draft">Draft</span>' +
+                    '<span>Edited ' + new Date(draft.updatedAt).toLocaleDateString() + '</span>' +
+                  '</div>' +
                 '</div>' +
-              '</div>' +
-              '<button class="btn btn-secondary btn-sm" type="button">Continue Writing</button>';
-            draftContainer.appendChild(item);
-          });
+                '<button class="btn btn-secondary btn-sm" type="button" onclick="window.location.href=\'editor.html?id=' + draft._id + '\'">Continue Writing</button>';
+              draftContainer.appendChild(item);
+            });
+          }
         }
 
-        // Populate Published table
-        var tableBody = document.querySelector('.published-table tbody');
-        if (tableBody && data.published && data.published.length > 0) {
-          tableBody.innerHTML = '';
-          data.published.forEach(function (article) {
-            var row = document.createElement('tr');
-            row.innerHTML = 
-              '<td class="pub-title-col">' + article.title + '</td>' +
-              '<td>' + (article.category || 'General') + '</td>' +
-              '<td>' + (article.views || 0) + '</td>' +
-              '<td>' + (article.likes || 0) + '</td>' +
-              '<td>' + new Date(article.publishedAt || article.createdAt).toLocaleDateString() + '</td>' +
-              '<td>' +
-                '<div class="action-links">' +
-                  '<span class="link-btn link-btn-edit" data-id="' + article._id + '">Edit</span>' +
-                  '<span class="link-btn link-btn-delete" data-id="' + article._id + '">Delete</span>' +
+        // 3. Populate Published table
+        if (tableBody) {
+          if (!data.published || data.published.length === 0) {
+            tableBody.innerHTML = 
+              '<tr>' +
+                '<td colspan="6" style="padding:var(--spacing-24);">' +
+                  '<div class="pec-title" style="text-align:center; font-family:var(--font-heading); font-size:0.9375rem; color:var(--text-secondary);">No articles published yet.</div>' +
+                '</td>' +
+              '</tr>';
+          } else {
+            tableBody.innerHTML = '';
+            data.published.forEach(function (article) {
+              var row = document.createElement('tr');
+              row.innerHTML = 
+                '<td class="pub-title-col" style="cursor:pointer;" onclick="window.location.href=\'article.html?id=' + article._id + '\'">' + article.title + '</td>' +
+                '<td>' + (article.category ? (article.category.name || 'General') : 'General') + '</td>' +
+                '<td>' + (article.views || 0) + '</td>' +
+                '<td>' + (article.likesCount || 0) + '</td>' +
+                '<td>' + new Date(article.updatedAt || article.createdAt).toLocaleDateString() + '</td>' +
+                '<td>' +
+                  '<div class="action-links">' +
+                    '<span class="link-btn link-btn-edit" data-id="' + article._id + '" style="cursor:pointer; color:var(--accent); font-weight:600; margin-right:8px;">Edit</span>' +
+                    '<span class="link-btn link-btn-delete" data-id="' + article._id + '" style="cursor:pointer; color:#ef4444; font-weight:600;">Delete</span>' +
+                  '</div>' +
+                '</td>';
+              tableBody.appendChild(row);
+            });
+            initTableActions();
+          }
+        }
+
+        // 4. Render Bookmarks
+        if (data.bookmarks && data.bookmarks.length > 0) {
+          var bookmarkItems = data.bookmarks.map(function (b) {
+            return (
+              '<div style="font-size:0.8125rem; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:8px;">' +
+                '<a href="article.html?id=' + b._id + '" style="color:var(--text-primary); text-decoration:none; font-weight:600; display:block;">' + b.title + '</a>' +
+                '<span style="color:var(--text-secondary); font-size:0.75rem;">by ' + (b.author ? b.author.username : 'Writer') + '</span>' +
+              '</div>'
+            );
+          }).join('');
+          createSidebarCard('Bookmarks', 'side-bookmarks', bookmarkItems);
+        }
+
+        // 5. Render Notifications
+        if (data.notifications && data.notifications.length > 0) {
+          var notificationItems = data.notifications.map(function (n) {
+            var actionText = n.type === 'like' ? 'liked your post' : (n.type === 'comment' ? 'commented on your post' : 'replied to you');
+            return (
+              '<div style="font-size:0.8125rem; display:flex; flex-direction:column; gap:2px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:8px;">' +
+                '<span style="color:var(--text-primary); font-weight:600;">' + (n.sender ? n.sender.username : 'User') + ' <span style="font-weight:400; color:var(--text-secondary);">' + actionText + '</span></span>' +
+                '<span style="color:var(--accent); font-size:0.75rem; font-style:italic;">"' + (n.article ? n.article.title : '') + '"</span>' +
+              '</div>'
+            );
+          }).join('');
+          createSidebarCard('Notifications', 'side-notifications', notificationItems);
+        }
+
+        // 6. Render Recent Activities
+        if (data.recentActivity && data.recentActivity.length > 0) {
+          var activityItems = data.recentActivity.map(function (act) {
+            return (
+              '<div style="font-size:0.8125rem; color:var(--text-secondary); display:flex; justify-content:space-between; align-items:center;">' +
+                '<span>' + act.action + '</span>' +
+                '<span style="font-size:0.75rem; opacity:0.6;">' + new Date(act.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '</span>' +
+              '</div>'
+            );
+          }).join('');
+          createSidebarCard('Recent Activity', 'side-activity', activityItems);
+        }
+
+        // 7. Render Recent Readers
+        if (data.recentReaders && data.recentReaders.length > 0) {
+          var readerItems = data.recentReaders.map(function (r) {
+            return (
+              '<div style="font-size:0.8125rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:8px;">' +
+                '<div>' +
+                  '<span style="color:var(--text-primary); font-weight:600; display:block;">' + (r.user ? r.user.username : 'Anonymous Reader') + '</span>' +
+                  '<span style="color:var(--text-secondary); font-size:0.75rem;">read ' + r.progress + '% of article</span>' +
                 '</div>' +
-              '</td>';
-            tableBody.appendChild(row);
-          });
-          initTableActions();
+                '<span style="font-size:0.75rem; opacity:0.6;">' + new Date(r.readAt).toLocaleDateString() + '</span>' +
+              '</div>'
+            );
+          }).join('');
+          createSidebarCard('Recent Readers', 'side-readers', readerItems);
         }
       })
       .catch(function (err) {
-        console.warn('Dashboard endpoints are unavailable, fallback to design static placeholders.', err);
+        console.error('Dashboard load error:', err);
+        if (draftContainer) {
+          renderErrorState(draftContainer, populateDashboard);
+        }
+        if (tableBody) {
+          tableBody.innerHTML = 
+            '<tr>' +
+              '<td colspan="6" style="padding:var(--spacing-24); text-align:center; color:#ef4444; font-weight:600;">' +
+                'Failed to load published articles from server.' +
+              '</td>' +
+            '</tr>';
+        }
       });
   }
 
   function initTableActions() {
     document.querySelectorAll('.link-btn-delete').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
         var id = btn.dataset.id;
         if (confirm('Are you sure you want to delete this article?')) {
           window.CentralAPI.deleteArticle(id)
             .then(function () {
               window.CustomRequest.showToast('Article deleted successfully.', 'success');
               populateDashboard(); // Refresh
+            })
+            .catch(function (err) {
+              window.CustomRequest.showToast('Failed to delete article: ' + err.message, 'error');
             });
         }
+      });
+    });
+
+    document.querySelectorAll('.link-btn-edit').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var id = btn.dataset.id;
+        window.location.href = 'editor.html?id=' + id;
       });
     });
   }

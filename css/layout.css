@@ -317,4 +317,14 @@
   opacity: 0.8;
 }
 
-
+/* Preserve grid layouts when using loading state content wrappers */
+div[class*="-grid"] > .real-content-view,
+.article-container > .real-content-view {
+  display: grid !important;
+  grid-template-columns: inherit;
+  grid-template-rows: inherit;
+  gap: inherit;
+  align-items: inherit;
+  grid-column: 1 / -1;
+  width: 100%;
+}

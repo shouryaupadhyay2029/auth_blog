@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var API_BASE_URL = 'http://localhost:5000/api'; // Default backend server base URL
+  var API_BASE_URL = 'http://localhost:5000/api/v1'; // Default backend server base URL
 
   function showToast(message, type) {
     // Create standard dynamic toast overlay to keep UI unified
