@@ -528,8 +528,14 @@
 /* ─────────────────────────────────────────────────────────────────
    7. CONTINUE READING / RELATED ARTICLES (Archive Card Language)
 ───────────────────────────────────────────────────────────────── */
+.article-related-outer-wrapper {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-24);
+}
+
 .article-related-section {
-  grid-column: 1 / -1;
   width: 100%;
   border-top: 1px solid var(--border);
   padding-top: var(--spacing-64);

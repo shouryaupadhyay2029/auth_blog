@@ -546,3 +546,66 @@
   margin-bottom: var(--spacing-12) !important;
 }
 
+/* ─────────────────────────────────────────────────
+   Sprint 12: Featured Small Card Robust Layout
+───────────────────────────────────────────────── */
+.featured-small-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: var(--spacing-32) var(--spacing-40) !important;
+  background-color: var(--surface) !important;
+  min-height: 280px !important;
+}
+
+.featured-small-card .card-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: var(--spacing-12) !important;
+}
+
+.featured-small-card .card-title {
+  font-size: 1.125rem !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.01em !important;
+  margin-top: var(--spacing-12) !important;
+  margin-bottom: var(--spacing-8) !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-heading) !important;
+}
+
+.featured-small-card .card-excerpt {
+  font-size: 0.8125rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.55 !important;
+  margin-bottom: var(--spacing-24) !important;
+  flex-grow: 1 !important;
+}
+
+.featured-small-card .card-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
+  padding-top: var(--spacing-16) !important;
+}
+
+.featured-small-card .card-author-name {
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+}
+
+.featured-small-card .card-link {
+  font-family: var(--font-heading) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  color: var(--text-secondary) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: var(--spacing-4) !important;
+  text-decoration: none !important;
+}
+

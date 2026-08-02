@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Server Error — BlogAuth</title>
+  <!-- Core Design Tokens & Resets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/state.css">
+</head>
+<body>
+  <div class="paper-grain-overlay"></div>
+
+  <!-- Fixed Floating Premium Navbar Header -->
+  <header class="navbar-header">
+    <div class="container navbar-container">
+      <div class="navbar-surface">
+        <div class="navbar-content" style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
+          <div class="navbar-left">
+            <a href="index.html" class="logo">
+              <span class="logo-mark">▲</span>
+              <span class="logo-text">BLOGAUTH</span>
+            </a>
+          </div>
+          <div class="navbar-right">
+            <a href="index.html" class="btn btn-ghost">Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: var(--spacing-96) var(--spacing-24); box-sizing: border-box;">
+    <div class="premium-empty-card" style="width: 100%;">
+      <div class="pec-illustration drafts" style="filter: hue-rotate(320deg);"></div>
+      <h1 class="pec-title" style="font-size: 2.25rem; margin-bottom: var(--spacing-16); font-family: var(--font-heading); font-weight: 800; color: #ef4444;">500</h1>
+      <h2 class="pec-title">Unexpected server error</h2>
+      <p class="pec-desc" style="max-width: 320px; margin: 0 auto var(--spacing-24) auto;">The server encountered an internal configuration limit or consensus delay. Please try again.</p>
+      <div style="display: flex; gap: 12px; justify-content: center; align-items: center;">
+        <button class="btn btn-secondary" onclick="window.location.reload();" type="button">Retry Connection</button>
+        <a href="index.html" class="btn btn-primary">Return Home</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-editorial" style="border-top: 1px solid rgba(255,255,255,0.03); padding: var(--spacing-48) 0; text-align: center; font-size: 0.8125rem; color: var(--text-secondary);">
+    <div class="container">
+      <span>© 2026 BLOGAUTH CORE. LICENSE CC BY-NC-ND 4.0.</span>
+    </div>
+  </footer>
+</body>
+</html>

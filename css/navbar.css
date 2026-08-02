@@ -71,18 +71,20 @@
 }
 
 .logo {
-  display: inline-flex;
-  align-items: center;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   gap: var(--spacing-12);
   font-family: var(--font-heading);
   font-weight: 800; /* Bold, high-end editorial weight */
   color: var(--text-primary);
-  font-size: 0.875rem; /* Clean 14px */
+  font-size: 1.25rem !important; /* Clean premium size, increased from 1.05rem */
   letter-spacing: 0.2em; /* Broad premium letter tracking */
   user-select: none;
   text-transform: uppercase;
   text-decoration: none;
   transition: opacity var(--transition-fast);
+  line-height: 1 !important;
 }
 
 .logo-text {
@@ -90,12 +92,16 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  line-height: 1 !important;
+  display: inline-block !important;
 }
 
 .logo-mark {
   color: var(--accent);
-  font-size: 1rem;
-  display: inline-block;
+  font-size: 1.35rem !important; /* Increased from 1.15rem */
+  display: inline-block !important;
+  line-height: 1 !important;
+  margin-top: -3px !important; /* Perfect optical baseline centering */
   transition: transform var(--transition-normal), color var(--transition-fast);
 }
 
@@ -689,3 +695,133 @@
     display: block;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────
+   10. ADAPTIVE EDITORIAL NAVIGATION SYSTEM - MORPH STYLE OVERRIDES
+───────────────────────────────────────────────────────────────── */
+.navbar-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.btn-start-writing .btn-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  will-change: width, opacity, margin-left;
+}
+
+.btn-start-writing .btn-icon {
+  display: inline-block;
+  will-change: transform;
+}
+
+.search-bar {
+  will-change: width;
+  overflow: hidden;
+}
+
+.search-bar input {
+  will-change: opacity;
+}
+
+/* Morph active underline indicator in Reading Mode */
+.navbar-surface-reading .nav-links li.active::after {
+  bottom: 0px !important;
+  width: 24px !important;
+  height: 2px !important;
+  border-radius: 0 !important;
+  transform: translateX(-50%) !important;
+  background-color: var(--accent) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   11. ICON-FIRST MORPH AND PREMIUM TOOLTIP SYSTEM
+───────────────────────────────────────────────────────────────── */
+.nav-links a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible !important; /* Ensure tooltips are not hidden */
+}
+
+.nav-text {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: opacity, transform, width, margin;
+}
+
+.nav-icon-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  filter: blur(4px);
+  will-change: opacity, transform, filter;
+  transition: none; /* Let GSAP timeline handle it */
+}
+
+.nav-icon-wrapper svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  display: block;
+}
+
+/* Tooltip implementation for reading mode */
+.navbar-surface-reading .nav-links a::before,
+.navbar-surface-reading .btn-start-writing::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -48px;
+  left: 50%;
+  transform: translate(-50%, 8px);
+  background: rgba(10, 10, 14, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--spacing-6) var(--spacing-12);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+}
+
+.navbar-surface-reading .nav-links a:hover::before,
+.navbar-surface-reading .btn-start-writing:hover::before {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Hide KBD search shortcut badge in Reading Mode when collapsed, show on hover */
+.navbar-surface-reading .search-bar::after {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.navbar-surface-reading .search-bar:hover::after,
+.navbar-surface-reading .search-bar:focus-within::after {
+  opacity: 0.8 !important;
+}
+
+

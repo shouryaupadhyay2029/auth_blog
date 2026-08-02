@@ -14,35 +14,7 @@
 
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ─────────────────────────────────────────────
-     1. READING PROGRESS BAR
-  ───────────────────────────────────────────── */
-  function initReadingProgress() {
-    var progressBar = document.querySelector('.reading-progress-bar');
-    if (!progressBar) return;
 
-    var rafId = null;
-
-    function updateProgress() {
-      var scrollTop = window.scrollY || document.documentElement.scrollTop;
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      var scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
-      
-      // GPU accelerated scaleX transformation
-      progressBar.style.transform = 'scaleX(' + scrollPercent.toFixed(4) + ')';
-      rafId = null;
-    }
-
-    function onScroll() {
-      if (rafId === null) {
-        rafId = requestAnimationFrame(updateProgress);
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    // Run once on load
-    updateProgress();
-  }
 
   /* ─────────────────────────────────────────────
      2. TABLE OF CONTENTS ACTIVE HEADING HIGHLIGHTER
@@ -192,7 +164,6 @@
      INIT
   ───────────────────────────────────────────── */
   function init() {
-    initReadingProgress();
     initTableOfContents();
     initArticleReveals();
     initCodeCopy();

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Categories — BlogAuth</title>
+  <!-- Core Design Tokens & Resets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <!-- Layout Grid & Primitives -->
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- Component Stylesheets -->
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/experience.css">
+  <link rel="stylesheet" href="css/latest.css">
+  <!-- Atomic Utilities & Transitions -->
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <!-- Sprint 8: Premium Micro Experience System -->
+  <link rel="stylesheet" href="css/micro.css">
+  <!-- Sprint 9: Architectural Interactive Editorial Cards -->
+  <link rel="stylesheet" href="css/cards.css">
+  <!-- Sprint 12: Technical Categories Styles -->
+  <link rel="stylesheet" href="css/categories.css">
+  <!-- Sprint 12: Spotlight Search Styles -->
+  <link rel="stylesheet" href="css/search.css">
+  <!-- Sprint 12: Application State Styles -->
+  <link rel="stylesheet" href="css/state.css">
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+  <!-- Static Paper Grain Overlay Atmosphere -->
+  <div class="paper-grain-overlay"></div>
+
+  <!-- Fixed Floating Premium Navbar Header -->
+  <header class="navbar-header">
+    <div class="container navbar-container">
+      <div class="navbar-surface">
+        <div class="navbar-content" style="display: flex; width: 100%; justify-content: space-between; align-items: center; transform-origin: center center;">
+          <!-- Left Section: Logo & Desktop Links -->
+          <div class="navbar-left">
+            <a href="index.html" class="logo" aria-label="BlogAuth homepage">
+              <span class="logo-mark">▲</span>
+              <span class="logo-text">BLOGAUTH</span>
+            </a>
+            <nav class="nav-desktop" aria-label="Main Navigation">
+              <ul class="nav-links">
+                <li><a href="index.html" data-tooltip="Home"><span class="nav-text">Home</span><span class="nav-icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span></a></li>
+                <li><a href="article.html" data-tooltip="Articles"><span class="nav-text">Articles</span><span class="nav-icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg></span></a></li>
+                <li class="active"><a href="categories.html" data-tooltip="Categories"><span class="nav-text">Categories</span><span class="nav-icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg></span></a></li>
+                <li><a href="about.html" data-tooltip="About"><span class="nav-text">About</span><span class="nav-icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span></a></li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Right Section: Search & Actions -->
+          <div class="navbar-right">
+            <div class="search-bar">
+              <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </span>
+              <input type="text" placeholder="Search articles..." id="nav-search" aria-label="Search articles">
+              <!-- Search Results Dropdown Overlay -->
+              <div class="search-dropdown-overlay" id="search-dropdown">
+                <div class="search-dropdown-section">
+                  <span class="search-dropdown-label">Trending Searches</span>
+                  <ul class="search-dropdown-list">
+                    <li><a href="#" class="search-suggest-item">Distributed queues in Rust</a></li>
+                    <li><a href="#" class="search-suggest-item">Fluid type clamp equations</a></li>
+                    <li><a href="#" class="search-suggest-item">Zero-trust JWT verification</a></li>
+                  </ul>
+                </div>
+                <div class="search-dropdown-section" style="margin-top: var(--spacing-16);">
+                  <span class="search-dropdown-label">Explore Taxonomy</span>
+                  <div class="search-taxonomies">
+                    <span class="search-tax-pill">Architecture</span>
+                    <span class="search-tax-pill">Performance</span>
+                    <span class="search-tax-pill">Design Systems</span>
+                  </div>
+                </div>
+                <div class="search-dropdown-status" id="search-status" style="display: none;"></div>
+              </div>
+            </div>
+            <div class="user-actions">
+              <a href="login.html" class="btn btn-ghost">Sign In</a>
+              <a href="dashboard.html" class="btn btn-primary btn-start-writing" style="display: inline-flex; align-items: center; overflow: hidden; white-space: nowrap; justify-content: center;" data-tooltip="Start Writing">
+                <span class="btn-icon" style="margin-right: 4px;">✏️</span>
+                <span class="btn-text">Start Writing</span>
+              </a>
+            </div>
+            
+            <!-- Hamburger menu trigger (Mobile & Tablet) -->
+            <button class="mobile-toggle" type="button" aria-label="Open navigation menu">
+              <span class="hamburger-box">
+                <span class="hamburger-line"></span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Overlay & Sliding Navigation Panel -->
+  <div class="mobile-drawer-overlay"></div>
+  <div class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div class="drawer-header">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">▲</span>
+        <span class="logo-text">BLOGAUTH</span>
+      </a>
+      <button class="drawer-close" type="button" aria-label="Close navigation menu">✕</button>
+    </div>
+    
+    <div class="nav-mobile">
+      <nav aria-label="Mobile Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="article.html">Articles</a></li>
+          <li class="active"><a href="categories.html">Categories</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="drawer-search">
+      <span class="search-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </span>
+      <input type="text" placeholder="Search articles..." id="drawer-search-input" aria-label="Search articles">
+    </div>
+
+    <div class="drawer-actions">
+      <a href="login.html" class="btn btn-ghost w-full">Sign In</a>
+      <a href="dashboard.html" class="btn btn-primary w-full">Start Writing</a>
+    </div>
+  </div>
+
+  <!-- Categories Browse Main Content -->
+  <main class="categories-page">
+    <div class="categories-container">
+      
+      <!-- 1. Editorial Hero -->
+      <section class="categories-hero">
+        <span class="cat-eyebrow cat-reveal">Disciplines</span>
+        <h1 class="cat-title cat-reveal">Browse by Discipline</h1>
+        <p class="cat-subtitle cat-reveal">
+          Explore curated articles, technical walk-throughs, and systems design post-mortems organized by core engineering domain.
+        </p>
+      </section>
+
+      <!-- 2. Category Grid -->
+        <div class="cat-grid page-skeleton-trigger">
+          <!-- Skeletons shown during query loading simulation -->
+          <div class="skeleton-content-view" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--spacing-24); width: 100%;">
+            <div class="skeleton-bg" style="height: 198px; padding: 24px; border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-sm); box-sizing: border-box;">
+              <div class="skeleton-bg sk-avatar" style="margin-bottom: 16px;"></div>
+              <div class="skeleton-bg sk-title" style="margin-bottom: 16px; width: 70%;"></div>
+              <div class="skeleton-bg sk-text"></div>
+            </div>
+            <div class="skeleton-bg" style="height: 198px; padding: 24px; border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-sm); box-sizing: border-box;">
+              <div class="skeleton-bg sk-avatar" style="margin-bottom: 16px;"></div>
+              <div class="skeleton-bg sk-title" style="margin-bottom: 16px; width: 70%;"></div>
+              <div class="skeleton-bg sk-text"></div>
+            </div>
+            <div class="skeleton-bg" style="height: 198px; padding: 24px; border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-sm); box-sizing: border-box;">
+              <div class="skeleton-bg sk-avatar" style="margin-bottom: 16px;"></div>
+              <div class="skeleton-bg sk-title" style="margin-bottom: 16px; width: 70%;"></div>
+              <div class="skeleton-bg sk-text"></div>
+            </div>
+            <div class="skeleton-bg" style="height: 198px; padding: 24px; border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-sm); box-sizing: border-box;">
+              <div class="skeleton-bg sk-avatar" style="margin-bottom: 16px;"></div>
+              <div class="skeleton-bg sk-title" style="margin-bottom: 16px; width: 70%;"></div>
+              <div class="skeleton-bg sk-text"></div>
+            </div>
+          </div>
+          <!-- Real content shown after short simulation load phase -->
+          <div class="real-content-view" style="display: none; width: 100%;">
+          
+          <!-- Card 1: Systems Design -->
+          <a href="article.html" class="discipline-card cat-reveal">
+            <div>
+              <div class="dc-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cpu"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg>
+              </div>
+              <div class="dc-info">
+                <h3 class="dc-title">Systems Design</h3>
+                <p class="dc-desc">Distributed architectures, service boundaries, consensus protocols, and scale strategies.</p>
+              </div>
+            </div>
+            <div class="dc-stats-row">
+              <div class="dc-count"><span>18</span> Articles</div>
+              <div class="dc-updated">July 30, 2026</div>
+            </div>
+          </a>
+
+          <!-- Card 2: Databases -->
+          <a href="article.html" class="discipline-card cat-reveal">
+            <div>
+              <div class="dc-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+              </div>
+              <div class="dc-info">
+                <h3 class="dc-title">Databases</h3>
+                <p class="dc-desc">Relational layouts, query planning, indexing logic, replicas, and replication pipelines.</p>
+              </div>
+            </div>
+            <div class="dc-stats-row">
+              <div class="dc-count"><span>14</span> Articles</div>
+              <div class="dc-updated">July 28, 2026</div>
+            </div>
+          </a>
+
+          <!-- Card 3: Security -->
+          <a href="article.html" class="discipline-card cat-reveal">
+            <div>
+              <div class="dc-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 9.7a1 1 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 .76-.97l8.24-2a1 1 0 0 1 .5 0l8.24 2A1 1 0 0 1 20 6v7z"/><path d="m9 12 2 2 4-4"/></svg>
+              </div>
+              <div class="dc-info">
+                <h3 class="dc-title">Security</h3>
+                <p class="dc-desc">Zero-trust controls, cryptographic assertions, tokens, JWT structures, and session boundaries.</p>
+              </div>
+            </div>
+            <div class="dc-stats-row">
+              <div class="dc-count"><span>12</span> Articles</div>
+              <div class="dc-updated">July 15, 2026</div>
+            </div>
+          </a>
+
+          <!-- Card 4: Frontend -->
+          <a href="article.html" class="discipline-card cat-reveal">
+            <div>
+              <div class="dc-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              </div>
+              <div class="dc-info">
+                <h3 class="dc-title">Frontend</h3>
+                <p class="dc-desc">Design systems engineering, CSS layouts, GPU rendering layers, and micro-interactions.</p>
+              </div>
+            </div>
+            <div class="dc-stats-row">
+              <div class="dc-count"><span>19</span> Articles</div>
+              <div class="dc-updated">July 29, 2026</div>
+            </div>
+          </a>
+
+          <!-- Card 5: DevOps & Cloud -->
+          <a href="article.html" class="discipline-card cat-reveal">
+            <div>
+              <div class="dc-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud"><path d="M17.5 19A3.5 3.5 0 0 0 21 15.5c0-2.79-2.54-4.5-5-4.5-.42-1.89-1.78-3.5-3.5-3.5a4.7 4.7 0 0 0-4.63 3.75c-1.85-.32-3.87.5-4.87 2.22A4.25 4.25 0 0 0 6.5 19Z"/></svg>
+              </div>
+              <div class="dc-info">
+                <h3 class="dc-title">DevOps & Cloud</h3>
+                <p class="dc-desc">Container topologies, service mesh routes, serverless tasks, and CI/CD pipelines.</p>
+              </div>
+            </div>
+            <div class="dc-stats-row">
+              <div class="dc-count"><span>15</span> Articles</div>
+              <div class="dc-updated">July 26, 2026</div>
+            </div>
+          </a>
+
+          <!-- Card 6: Compiler Theory -->
+          <a href="article.html" class="discipline-card cat-reveal">
+            <div>
+              <div class="dc-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-terminal"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              </div>
+              <div class="dc-info">
+                <h3 class="dc-title">Compiler Theory</h3>
+                <p class="dc-desc">Parser pipelines, AST transformations, static analysis routines, and byte compiling.</p>
+              </div>
+            </div>
+            <div class="dc-stats-row">
+              <div class="dc-count"><span>8</span> Articles</div>
+              <div class="dc-updated">July 10, 2026</div>
+            </div>
+          </a>
+
+          <!-- Card 7: Cryptography -->
+          <a href="article.html" class="discipline-card cat-reveal">
+            <div>
+              <div class="dc-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="dc-info">
+                <h3 class="dc-title">Cryptography</h3>
+                <p class="dc-desc">Key exchanges, homomorphic encryption bounds, hashes, and elliptic curve math.</p>
+              </div>
+            </div>
+            <div class="dc-stats-row">
+              <div class="dc-count"><span>10</span> Articles</div>
+              <div class="dc-updated">July 22, 2026</div>
+            </div>
+          </a>
+
+          <!-- Card 8: Machine Learning -->
+          <a href="article.html" class="discipline-card cat-reveal">
+            <div>
+              <div class="dc-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v14"/><path d="M12 12h6"/><path d="M12 12H6"/><path d="M12 9a3 3 0 1 0-3 3"/><path d="M12 9a3 3 0 1 1 3 3"/><path d="M12 15a3 3 0 1 0-3-3"/><path d="M12 15a3 3 0 1 1 3-3"/></svg>
+              </div>
+              <div class="dc-info">
+                <h3 class="dc-title">Machine Learning</h3>
+                <p class="dc-desc">Model constraints, neural connections, linear algebra transforms, and loss boundaries.</p>
+              </div>
+            </div>
+            <div class="dc-stats-row">
+              <div class="dc-count"><span>16</span> Articles</div>
+              <div class="dc-updated">July 27, 2026</div>
+            </div>
+          </a>
+
+          </div>
+          <!-- /real-content-view -->
+        </div>
+      </section>
+
+      <!-- 3. Trending Collections -->
+      <section class="collections-section categories-section">
+        <div class="section-label-group cat-reveal">
+          <span class="sec-eyebrow">Curated Paths</span>
+          <h2 class="sec-title">Trending Collections</h2>
+        </div>
+        
+        <div class="collections-grid">
+          
+          <!-- Collection 1 -->
+          <a href="article.html" class="collection-card cat-reveal">
+            <span class="cc-meta">4 Chapters</span>
+            <h3 class="cc-title">Building Scalable APIs</h3>
+            <div class="cc-action">Explore Path <span>→</span></div>
+          </a>
+
+          <!-- Collection 2 -->
+          <a href="article.html" class="collection-card cat-reveal">
+            <span class="cc-meta">6 Chapters</span>
+            <h3 class="cc-title">Modern CSS</h3>
+            <div class="cc-action">Explore Path <span>→</span></div>
+          </a>
+
+          <!-- Collection 3 -->
+          <a href="article.html" class="collection-card cat-reveal">
+            <span class="cc-meta">5 Chapters</span>
+            <h3 class="cc-title">Rust Essentials</h3>
+            <div class="cc-action">Explore Path <span>→</span></div>
+          </a>
+
+          <!-- Collection 4 -->
+          <a href="article.html" class="collection-card cat-reveal">
+            <span class="cc-meta">8 Chapters</span>
+            <h3 class="cc-title">Cloud Native</h3>
+            <div class="cc-action">Explore Path <span>→</span></div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- 4. Popular Tags -->
+      <section class="tags-section categories-section">
+        <div class="section-label-group cat-reveal">
+          <span class="sec-eyebrow">Popular Keywords</span>
+          <h2 class="sec-title">Popular Tags</h2>
+        </div>
+        
+        <ul class="tags-list cat-reveal">
+          <li><a href="article.html" class="tag-chip">#docker</a></li>
+          <li><a href="article.html" class="tag-chip">#react</a></li>
+          <li><a href="article.html" class="tag-chip">#typescript</a></li>
+          <li><a href="article.html" class="tag-chip">#postgres</a></li>
+          <li><a href="article.html" class="tag-chip">#aws</a></li>
+          <li><a href="article.html" class="tag-chip">#kubernetes</a></li>
+          <li><a href="article.html" class="tag-chip">#rust</a></li>
+          <li><a href="article.html" class="tag-chip">#graphql</a></li>
+          <li><a href="article.html" class="tag-chip">#redis</a></li>
+          <li><a href="article.html" class="tag-chip">#webassembly</a></li>
+        </ul>
+      </section>
+
+      <!-- 5. CTA -->
+      <section class="categories-section" style="margin-top: var(--spacing-96);">
+        <div class="archive-cta cat-reveal">
+          <h2 class="cta-title">Can't find what you're looking for?</h2>
+          <p class="cta-desc">Explore our full index of historical publications, systems deep-dives, and technical release notes.</p>
+          <a href="article.html" class="btn btn-primary" style="padding: var(--spacing-12) var(--spacing-28);">Explore Complete Archive</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Premium Editorial Footer Hub -->
+  <footer class="footer-editorial">
+    <div class="container">
+      <div class="footer-container">
+        
+        <!-- Left Brand column -->
+        <div class="footer-brand-col">
+          <a href="index.html" class="logo">
+            <span class="logo-mark">▲</span>
+            <span class="logo-text">BLOGAUTH</span>
+          </a>
+          <p class="footer-desc" style="margin-top: var(--spacing-16);">
+            A high-end digital journal exploring systems architecture, database internals, and zero-trust engineering methodologies.
+          </p>
+        </div>
+
+        <!-- Middle Links columns -->
+        <div class="footer-links-grid">
+          <div class="footer-links-col">
+            <h4 class="footer-col-title">Discipline Index</h4>
+            <ul class="footer-links-list">
+              <li><a href="categories.html">Systems Design</a></li>
+              <li><a href="categories.html">Databases</a></li>
+              <li><a href="categories.html">Security Systems</a></li>
+              <li><a href="categories.html">Compiler Theory</a></li>
+            </ul>
+          </div>
+          <div class="footer-links-col">
+            <h4 class="footer-col-title">Platform Hub</h4>
+            <ul class="footer-links-list">
+              <li><a href="index.html">Cover Page</a></li>
+              <li><a href="article.html">Technical Index</a></li>
+              <li><a href="dashboard.html">Write Console</a></li>
+              <li><a href="login.html">Developer Auth</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right Newsletter column -->
+        <div class="footer-newsletter-col">
+          <h4 class="footer-col-title">Subscribe to the Issue</h4>
+          <p class="footer-desc" style="margin-bottom: 0;">
+            Receive deep technical summaries, systems post-mortems, and engineering guides directly to your inbox.
+          </p>
+          <form class="footer-newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+            <input type="email" placeholder="email@domain.com" class="footer-newsletter-input" required aria-label="Email address">
+            <button class="btn btn-primary" type="submit" style="padding: var(--spacing-8) var(--spacing-16); font-size: 0.8125rem;">Join</button>
+          </form>
+          <div class="footer-social-links">
+            <a href="#" class="footer-social-link" title="Twitter / X">𝕏</a>
+            <a href="#" class="footer-social-link" title="LinkedIn">in</a>
+            <a href="#" class="footer-social-link" title="GitHub">git</a>
+            <a href="#" class="footer-social-link" title="RSS Feed">rss</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Credits and Metadata -->
+      <div class="footer-bottom">
+        <div>
+          <span>© 2026 BLOGAUTH CORE. LICENSE CC BY-NC-ND 4.0.</span>
+          <span style="margin-left: var(--spacing-16); opacity: 0.5;">VERSION 1.4.2-RELEASE</span>
+        </div>
+        <a href="#" class="footer-back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">Back to Top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Spotlight Command Menu Search overlay -->
+  <div class="search-modal-backdrop" id="search-modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-label="Command search menu">
+    <div class="search-modal-panel" id="search-modal-panel">
+      <!-- Header search inputs -->
+      <div class="search-modal-header">
+        <span class="sm-search-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <input type="text" class="sm-input" id="sm-input" placeholder="Search articles, categories or authors..." autocomplete="off" spellcheck="false" aria-label="Search inputs">
+        <span class="sm-close-shortcut">ESC</span>
+      </div>
+
+      <!-- Results scrolls list -->
+      <div class="search-modal-content" id="search-modal-results">
+        <!-- populated by js/search.js -->
+      </div>
+
+      <!-- Footer helpful hints -->
+      <div class="search-modal-footer">
+        <span><span class="sm-help-key">↑↓</span> Navigate</span>
+        <span><span class="sm-help-key">Enter</span> Select</span>
+        <span><span class="sm-help-key">Esc</span> Close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Micro Experience System -->
+  <script src="js/micro.js"></script>
+  <!-- Architectural Card System -->
+  <script src="js/cards.js"></script>
+  <script src="js/navbar.js"></script>
+  <!-- Sprint 12: Spotlight Command Menu Search Script -->
+  <script src="js/search.js"></script>
+  <!-- Sprint 12: Application State Script -->
+  <script src="js/state.js"></script>
+
+  <!-- Page reveal GSAP timelines -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof gsap !== 'undefined') {
+        // Initial hero layout reveal
+        gsap.to('.categories-hero .cat-reveal', {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: 'power3.out'
+        });
+
+        // Trigger staggers for section elements on scroll
+        gsap.utils.toArray('.categories-section').forEach(section => {
+          const elements = section.querySelectorAll('.cat-reveal');
+          gsap.to(elements, {
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            },
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.08,
+            ease: 'power3.out'
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

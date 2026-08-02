@@ -141,4 +141,309 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
+
+  /* ─────────────────────────────────────────────────────────────────
+     ADAPTIVE EDITORIAL NAVIGATION SYSTEM (GSAP ScrollTrigger Morph)
+  ───────────────────────────────────────────────────────────────── */
+  const navbarSurface = document.querySelector('.navbar-surface');
+  const navbarHeader = document.querySelector('.navbar-header');
+  const navLinks = document.querySelector('.nav-desktop .nav-links');
+  const searchInput = document.getElementById('nav-search');
+  const searchBar = document.querySelector('.search-bar');
+  const signInBtn = document.querySelector('.user-actions .btn-ghost');
+  const startWritingBtn = document.querySelector('.btn-start-writing');
+  const startWritingText = startWritingBtn ? startWritingBtn.querySelector('.btn-text') : null;
+  const logo = document.querySelector('.navbar-left .logo');
+  
+  // Morph text to icons selectors
+  const navTexts = document.querySelectorAll('.nav-desktop .nav-text');
+  const navIcons = document.querySelectorAll('.nav-desktop .nav-icon-wrapper');
+  const navAnchors = document.querySelectorAll('.nav-desktop .nav-links a');
+
+  if (navbarSurface && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let isReadingMode = false;
+
+    // Check if the page has a hero section (Homepage)
+    const heroSection = document.querySelector('.hero-section');
+
+    // Create morph timeline
+    const morphTimeline = gsap.timeline({
+      paused: true,
+      onComplete: () => {
+        isReadingMode = true;
+        navbarSurface.classList.add('navbar-surface-reading');
+      },
+      onReverseComplete: () => {
+        isReadingMode = false;
+        navbarSurface.classList.remove('navbar-surface-reading');
+        
+        // Safely reset elements back to clean cover states
+        gsap.set([navbarSurface, '.navbar-content', logo, navLinks, searchBar, searchInput, navTexts, navIcons, navAnchors], { clearProps: 'all' });
+        if (signInBtn) gsap.set(signInBtn, { clearProps: 'all' });
+        if (startWritingText) gsap.set(startWritingText, { clearProps: 'all' });
+      }
+    });
+
+    if (prefersReduced) {
+      // Reduced motion: basic fade transition
+      const triggerEl = heroSection || document.body;
+      const startTrigger = heroSection ? 'bottom 25%' : '120px top';
+
+      ScrollTrigger.create({
+        trigger: triggerEl,
+        start: startTrigger,
+        onEnter: () => {
+          gsap.to(navbarSurface, {
+            opacity: 0,
+            duration: 0.25,
+            onComplete: () => {
+              navbarSurface.classList.add('navbar-surface-reading');
+              gsap.to(navbarSurface, { opacity: 1, duration: 0.25 });
+            }
+          });
+        },
+        onLeaveBack: () => {
+          gsap.to(navbarSurface, {
+            opacity: 0,
+            duration: 0.25,
+            onComplete: () => {
+              navbarSurface.classList.remove('navbar-surface-reading');
+              gsap.to(navbarSurface, { opacity: 1, duration: 0.25 });
+            }
+          });
+        }
+      });
+    } else {
+      // Build high-end animation timeline
+      // 1. Surface Morph
+      morphTimeline.to(navbarSurface, {
+        width: '74%',
+        borderRadius: '12px',
+        paddingLeft: '16px',
+        paddingRight: '16px',
+        background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.94) 0%, rgba(6, 6, 8, 0.98) 100%)',
+        backdropFilter: 'blur(28px) saturate(180%)',
+        boxShadow: '0 8px 32px -8px rgba(0, 0, 0, 0.5)',
+        scaleY: 0.88, // Keeps height around 61.6px (60-64px!)
+        duration: 0.6,
+        ease: 'power3.inOut'
+      }, 0);
+
+      // Counter-scale content wrapper to prevent distortion
+      morphTimeline.to('.navbar-content', {
+        scaleY: 1.13, // Counters scaleY(0.88)
+        duration: 0.6,
+        ease: 'power3.inOut'
+      }, 0);
+
+      // 2. Logo scale
+      morphTimeline.to(logo, {
+        scale: 0.8,
+        duration: 0.6,
+        ease: 'power3.inOut'
+      }, 0);
+
+      // 3. Nav Links gaps & Icon morph
+      if (navLinks) {
+        morphTimeline.to(navLinks, {
+          gap: '18px', // Gap between icons: 16-20px!
+          duration: 0.6,
+          ease: 'power3.inOut'
+        }, 0);
+
+        // Text: opacity 1->0, translateY 0->-6px, scale 1->0.95
+        morphTimeline.to(navTexts, {
+          opacity: 0,
+          y: -6,
+          scale: 0.95,
+          width: 0,
+          marginLeft: 0,
+          marginRight: 0,
+          duration: 0.5,
+          ease: 'power3.inOut'
+        }, 0);
+
+        // Icon: opacity 0->1, scale 0.85->1, blur 4px->0 with 80% overlap (start at 0.1s)
+        morphTimeline.to(navIcons, {
+          opacity: 1,
+          scale: 1,
+          filter: 'blur(0px)',
+          duration: 0.5,
+          ease: 'power3.inOut'
+        }, 0.1);
+
+        // Anchor container: padding 10-12px (11px all around), borderRadius 50%
+        morphTimeline.to(navAnchors, {
+          paddingTop: '11px',
+          paddingBottom: '11px',
+          paddingLeft: '11px',
+          paddingRight: '11px',
+          borderRadius: '50%',
+          duration: 0.6,
+          ease: 'power3.inOut'
+        }, 0);
+      }
+
+      // 4. Search bar collapse
+      if (searchBar && searchInput) {
+        morphTimeline.to(searchBar, {
+          width: '38px',
+          duration: 0.6,
+          ease: 'power3.inOut'
+        }, 0);
+        morphTimeline.to(searchInput, {
+          opacity: 0,
+          duration: 0.4,
+          ease: 'power3.inOut'
+        }, 0);
+      }
+
+      // 5. Sign In button fade & collapse
+      if (signInBtn) {
+        morphTimeline.to(signInBtn, {
+          opacity: 0,
+          width: 0,
+          paddingLeft: 0,
+          paddingRight: 0,
+          marginLeft: 0,
+          marginRight: 0,
+          pointerEvents: 'none',
+          duration: 0.6,
+          ease: 'power3.inOut'
+        }, 0);
+      }
+
+      // 6. Start Writing button -> Icon button morph
+      if (startWritingBtn && startWritingText) {
+        morphTimeline.to(startWritingText, {
+          opacity: 0,
+          width: 0,
+          marginLeft: 0,
+          marginRight: 0,
+          duration: 0.6,
+          ease: 'power3.inOut'
+        }, 0);
+        morphTimeline.to(startWritingBtn, {
+          paddingLeft: '11px',
+          paddingRight: '11px',
+          borderRadius: '10px', // macOS rounded square icon
+          duration: 0.6,
+          ease: 'power3.inOut'
+        }, 0);
+      }
+
+      // Setup ScrollTrigger trigger points
+      if (heroSection) {
+        // Landing Page: transition when Hero is 75% scrolled out
+        ScrollTrigger.create({
+          trigger: heroSection,
+          start: 'bottom 25%',
+          onEnter: () => morphTimeline.play(),
+          onLeaveBack: () => {
+            morphTimeline.reverse();
+            gsap.to(navbarHeader, { y: 0, opacity: 1, duration: 0.3 });
+          }
+        });
+      } else {
+        // Other Pages: transition after scrolling 120px down
+        ScrollTrigger.create({
+          trigger: document.body,
+          start: '120px top',
+          onEnter: () => morphTimeline.play(),
+          onLeaveBack: () => {
+            morphTimeline.reverse();
+            gsap.to(navbarHeader, { y: 0, opacity: 1, duration: 0.3 });
+          }
+        });
+      }
+
+      // Scroll Direction Behavior (Auto-Hide / Auto-Reveal)
+      ScrollTrigger.create({
+        onUpdate: (self) => {
+          if (isReadingMode) {
+            if (self.direction === 1) {
+              // Scroll DOWN: Shift navbar up by 10px, reduce opacity to 0.7
+              gsap.to(navbarHeader, {
+                y: -10,
+                opacity: 0.7,
+                duration: 0.35,
+                ease: 'power2.out',
+                overwrite: 'auto'
+              });
+            } else {
+              // Scroll UP: Fully opaque, return to normal position
+              gsap.to(navbarHeader, {
+                y: 0,
+                opacity: 1,
+                duration: 0.3,
+                ease: 'power2.out',
+                overwrite: 'auto'
+              });
+            }
+          }
+        }
+      });
+
+      // Hover / focus interaction expanded states for searchBar in Reading Mode
+      if (searchBar && searchInput) {
+        searchBar.addEventListener('mouseenter', () => {
+          if (isReadingMode) {
+            gsap.to(searchBar, { width: '170px', duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+            gsap.to(searchInput, { opacity: 1, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+          }
+        });
+
+        searchBar.addEventListener('mouseleave', () => {
+          if (isReadingMode && document.activeElement !== searchInput) {
+            gsap.to(searchBar, { width: '38px', duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+            gsap.to(searchInput, { opacity: 0, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+          }
+        });
+
+        searchInput.addEventListener('focus', () => {
+          if (isReadingMode) {
+            gsap.to(searchBar, { width: '210px', duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+            gsap.to(searchInput, { opacity: 1, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+          }
+        });
+
+        searchInput.addEventListener('blur', () => {
+          if (isReadingMode) {
+            gsap.to(searchBar, { width: '38px', duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+            gsap.to(searchInput, { opacity: 0, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+          }
+        });
+      }
+
+      // Hover expanded states for Start Writing button in Reading Mode
+      if (startWritingBtn && startWritingText) {
+        startWritingBtn.addEventListener('mouseenter', () => {
+          if (isReadingMode) {
+            gsap.to(startWritingText, {
+              opacity: 1,
+              width: 110,
+              marginLeft: 4,
+              duration: 0.3,
+              ease: 'power2.out',
+              overwrite: 'auto'
+            });
+          }
+        });
+
+        startWritingBtn.addEventListener('mouseleave', () => {
+          if (isReadingMode) {
+            gsap.to(startWritingText, {
+              opacity: 0,
+              width: 0,
+              marginLeft: 0,
+              duration: 0.3,
+              ease: 'power2.out',
+              overwrite: 'auto'
+            });
+          }
+        });
+      }
+    }
+  }
 });
