@@ -27,19 +27,16 @@ const validateCreateArticle = [
     .withMessage('Title must contain between 5 and 120 characters.'),
   
   body('content')
-    .notEmpty()
-    .withMessage('Article content body is required.'),
+    .optional(),
   
   body('excerpt')
+    .optional()
     .trim()
-    .notEmpty()
-    .withMessage('Article summary excerpt is required.')
     .isLength({ max: 400 })
     .withMessage('Excerpt cannot exceed 400 characters.'),
   
   body('category')
-    .notEmpty()
-    .withMessage('Category classification is required.')
+    .optional()
     .isMongoId()
     .withMessage('Please provide a valid Mongoose Category ObjectId.'),
   
@@ -55,8 +52,8 @@ const validateCreateArticle = [
 
   body('status')
     .optional()
-    .isIn(['draft', 'published', 'archived'])
-    .withMessage('Status must match draft, published, or archived.'),
+    .isIn(['draft', 'in review', 'scheduled', 'published', 'archived', 'rejected'])
+    .withMessage('Status must match draft, in review, scheduled, published, archived, or rejected.'),
 
   handleValidationErrors
 ];
@@ -73,9 +70,7 @@ const validateUpdateArticle = [
     .withMessage('Title must contain between 5 and 120 characters.'),
   
   body('content')
-    .optional()
-    .notEmpty()
-    .withMessage('Article content body cannot be empty.'),
+    .optional(),
   
   body('excerpt')
     .optional()
@@ -100,8 +95,8 @@ const validateUpdateArticle = [
 
   body('status')
     .optional()
-    .isIn(['draft', 'published', 'archived'])
-    .withMessage('Status must match draft, published, or archived.'),
+    .isIn(['draft', 'in review', 'scheduled', 'published', 'archived', 'rejected'])
+    .withMessage('Status must match draft, in review, scheduled, published, archived, or rejected.'),
 
   handleValidationErrors
 ];

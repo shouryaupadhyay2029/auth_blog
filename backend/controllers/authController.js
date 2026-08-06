@@ -242,6 +242,29 @@ const resetPassword = catchAsync(async (req, res, next) => {
   });
 });
 
+/**
+ * Get current authenticated user profile
+ */
+const getMe = catchAsync(async (req, res, next) => {
+  const { User } = require('../models');
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    return next(new AppError('User belonging to this token no longer exists.', 404));
+  }
+  res.status(200).json({
+    success: true,
+    data: {
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified
+      }
+    }
+  });
+});
+
 module.exports = {
   register,
   login,
@@ -249,5 +272,6 @@ module.exports = {
   refresh,
   verifyEmail,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  getMe
 };

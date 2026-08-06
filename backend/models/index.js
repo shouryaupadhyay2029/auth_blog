@@ -12,6 +12,8 @@ const Session = require('./Session');
 const NewsletterSubscriber = require('./NewsletterSubscriber');
 const Report = require('./Report');
 const AuditLog = require('./AuditLog');
+const ArticleVersion = require('./ArticleVersion');
+const Media = require('./Media');
 
 module.exports = {
   User,
@@ -26,5 +28,7 @@ module.exports = {
   Session,
   NewsletterSubscriber,
   Report,
-  AuditLog
+  AuditLog,
+  ArticleVersion,
+  Media
 };

@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\Shourya Upadhyay\\OneDrive\\Documents\\ALL CODES\\I2_P1_\\auth_blog\\backend\\logs\\.9d2324fcced24eb1abc92ee2eb2ea6f8be81e62d-audit.json",
+    "files": [
+        {
+            "date": 1785945361068,
+            "name": "C:\\Users\\Shourya Upadhyay\\OneDrive\\Documents\\ALL CODES\\I2_P1_\\auth_blog\\backend\\logs\\combined-2026-08-05.log",
+            "hash": "cf782a35eaa9f1c56e599fccd3a6f3957399e7d8bb7f354641fc292009e330be"
+        },
+        {
+            "date": 1785997285100,
+            "name": "C:\\Users\\Shourya Upadhyay\\OneDrive\\Documents\\ALL CODES\\I2_P1_\\auth_blog\\backend\\logs\\combined-2026-08-06.log",
+            "hash": "4b57c9b1f764feaaf334a6635d7a9738264dc05c31865eb3887e5a9a1301f5db"
+        }
+    ],
+    "hashType": "sha256"
+}

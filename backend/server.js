@@ -1,9 +1,8 @@
-/* BlogAuth V1 server.js — Server Entry Coordinator */
+const { logger } = require('./utils/logger');
 
 // Capture early startup uncaught crash vectors
 process.on('uncaughtException', err => {
-  console.error('UNCAUGHT EXCEPTION SYSTEM CRASH: Shutting down process...');
-  console.error(err.name, err.message);
+  logger.error('UNCAUGHT EXCEPTION SYSTEM CRASH: Shutting down process...', err);
   process.exit(1);
 });
 
@@ -13,22 +12,25 @@ validateEnv();
 
 const app = require('./app');
 const connectDB = require('./config/db');
+const schedulerService = require('./services/schedulerService');
+
 // Compile all Mongoose models
 require('./models');
 
-// Connect database client
-connectDB();
+// Connect database client and start background jobs
+connectDB().then(() => {
+  schedulerService.startScheduler();
+});
 
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
-  console.log(`BlogAuth Server online in [${process.env.NODE_ENV}] mode on port: ${PORT}`);
+  logger.info(`BlogAuth Server online in [${process.env.NODE_ENV}] mode on port: ${PORT}`);
 });
 
 // Capture unhandled asynchronous rejections (e.g. unhandled Promise rejections)
 process.on('unhandledRejection', err => {
-  console.error('UNHANDLED REJECTION SYSTEM SHUTDOWN: Closing active servers...');
-  console.error(err.name, err.message);
+  logger.error('UNHANDLED REJECTION SYSTEM SHUTDOWN: Closing active servers...', err);
   server.close(() => {
     process.exit(1);
   });
@@ -36,8 +38,9 @@ process.on('unhandledRejection', err => {
 
 // Capture system shutdown flags
 process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received. Initiating graceful server close-down...');
+  logger.info('SIGTERM signal received. Initiating graceful server close-down...');
+  schedulerService.stopScheduler();
   server.close(() => {
-    console.log('Server process terminated safely.');
+    logger.info('Server process terminated safely.');
   });
 });

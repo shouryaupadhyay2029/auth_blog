@@ -1,5 +1,5 @@
 /* BlogAuth V1 controllers/dashboardController.js — Dashboard Data Aggregator */
-const { Article, Bookmark, Notification, ReadingHistory, AuditLog, User } = require('../models');
+const { Article, Bookmark, Notification, ReadingHistory, AuditLog, User, Media } = require('../models');
 const catchAsync = require('../utils/catchAsync');
 
 /**
@@ -13,14 +13,22 @@ const getDashboardData = catchAsync(async (req, res, next) => {
 
   // 2. Fetch User's Articles
   const userArticles = await Article.find({ author: userId });
-  const userArticleIds = userArticles.map(art => art._id);
 
-  // Split into published vs drafts
+  // Categorize based on workflow status
   const published = userArticles.filter(art => art.status === 'published');
   const drafts = userArticles.filter(art => art.status === 'draft');
+  const scheduled = userArticles.filter(art => art.status === 'scheduled');
+  const inReview = userArticles.filter(art => art.status === 'in review');
+  const archived = userArticles.filter(art => art.status === 'archived');
+  const rejected = userArticles.filter(art => art.status === 'rejected');
 
   // Compute views aggregates
   const viewsCount = userArticles.reduce((acc, art) => acc + (art.views || 0), 0);
+
+  // Recently edited posts (limit 5)
+  const recentlyEdited = [...userArticles]
+    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+    .slice(0, 5);
 
   // 3. Fetch User's Bookmarks
   const bookmarksList = await Bookmark.find({ user: userId })
@@ -45,7 +53,7 @@ const getDashboardData = catchAsync(async (req, res, next) => {
 
   // 6. Fetch Recent Readers (who read this user's articles)
   const recentReadersHistory = await ReadingHistory.find({
-    article: { $in: userArticleIds },
+    article: { $in: userArticles.map(art => art._id) },
     user: { $ne: userId } // Exclude the author's own readings
   })
     .populate('user', 'username email avatar')
@@ -59,6 +67,16 @@ const getDashboardData = catchAsync(async (req, res, next) => {
     progress: history.progress,
     readAt: history.lastReadAt
   }));
+
+  // 7. Fetch Media Statistics
+  const userMedia = await Media.find({ uploader: userId });
+  const uploadedMediaCount = userMedia.length;
+  const storageUsage = userMedia.reduce((acc, med) => acc + (med.bytes || 0), 0);
+  
+  const recentUploads = await Media.find({ uploader: userId })
+    .sort('-createdAt')
+    .limit(5)
+    .populate('article', 'title slug');
 
   // Compiling response statistics metrics payload
   res.status(200).json({
@@ -74,10 +92,22 @@ const getDashboardData = catchAsync(async (req, res, next) => {
     },
     publishedCount: published.length,
     draftCount: drafts.length,
+    scheduledCount: scheduled.length,
+    inReviewCount: inReview.length,
+    archivedCount: archived.length,
+    rejectedCount: rejected.length,
     viewsCount,
     followersCount: Math.floor(viewsCount * 0.08) + 12, // Scaled mock metric based on views
+    storageUsage,
+    uploadedMediaCount,
+    recentUploads,
     drafts,
     published,
+    scheduled,
+    inReview,
+    archived,
+    rejected,
+    recentlyEdited,
     bookmarks,
     notifications,
     recentActivity,

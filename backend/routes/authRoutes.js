@@ -1,6 +1,7 @@
 /* BlogAuth V1 routes/authRoutes.js — Authentication Endpoints Router */
 const express = require('express');
 const router = express.Router();
+const { protect } = require('../middleware/authMiddleware');
 
 const authController = require('../controllers/authController');
 const {
@@ -9,6 +10,9 @@ const {
   validateForgotPassword,
   validateResetPassword
 } = require('../validators/authValidator');
+
+// Get current user profile info
+router.get('/me', protect, authController.getMe);
 
 // User Registration
 router.post('/register', validateRegister, authController.register);
