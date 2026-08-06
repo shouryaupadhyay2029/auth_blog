@@ -1,1 +1,4 @@
 {"level":"info","message":"BlogAuth Server online in [development] mode on port: 5000","service":"blogauth-service","timestamp":"2026-08-06 11:51:29"}
+{"level":"info","message":"BlogAuth Server online in [development] mode on port: 5000","service":"blogauth-service","timestamp":"2026-08-06 12:01:49"}
+{"level":"info","message":"MongoDB connection established: ac-mljr48l-shard-00-00.qfdxoap.mongodb.net","service":"blogauth-service","timestamp":"2026-08-06 12:01:50"}
+{"level":"info","message":"SIGINT signal received. Initiating graceful server close-down...","service":"blogauth-service","timestamp":"2026-08-06 12:02:11"}

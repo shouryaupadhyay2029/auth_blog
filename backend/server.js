@@ -11,7 +11,7 @@ const { validateEnv } = require('./config/env');
 validateEnv();
 
 const app = require('./app');
-const connectDB = require('./config/db');
+const { connectDB, closeDB } = require('./config/db');
 const schedulerService = require('./services/schedulerService');
 
 // Compile all Mongoose models
@@ -31,16 +31,24 @@ const server = app.listen(PORT, () => {
 // Capture unhandled asynchronous rejections (e.g. unhandled Promise rejections)
 process.on('unhandledRejection', err => {
   logger.error('UNHANDLED REJECTION SYSTEM SHUTDOWN: Closing active servers...', err);
-  server.close(() => {
+  server.close(async () => {
+    await closeDB();
     process.exit(1);
   });
 });
 
-// Capture system shutdown flags
-process.on('SIGTERM', () => {
-  logger.info('SIGTERM signal received. Initiating graceful server close-down...');
+// Helper for graceful shutdown
+const gracefulShutdown = async (signal) => {
+  logger.info(`${signal} signal received. Initiating graceful server close-down...`);
   schedulerService.stopScheduler();
-  server.close(() => {
+  server.close(async () => {
+    await closeDB();
     logger.info('Server process terminated safely.');
+    process.exit(0);
   });
-});
+};
+
+// Capture system shutdown flags
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+

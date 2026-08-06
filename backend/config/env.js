@@ -5,7 +5,7 @@ const path = require('path');
 // Load environment variables early
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-const REQUIRED_ENV_VARS = ['MONGO_URI', 'JWT_SECRET'];
+const REQUIRED_ENV_VARS = ['PORT', 'MONGO_URI', 'JWT_SECRET'];
 
 function validateEnv() {
   const missing = [];
