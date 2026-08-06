@@ -2,11 +2,12 @@
 require('./setup');
 const request = require('supertest');
 const app = require('../app');
-const { User } = require('../models');
+const { User, Session } = require('../models');
 
 describe('Authentication Endpoints', () => {
   beforeEach(async () => {
     await User.deleteMany({});
+    await Session.deleteMany({});
   });
 
   it('should register a new user successfully', async () => {

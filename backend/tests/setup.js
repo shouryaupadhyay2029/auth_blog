@@ -1,8 +1,15 @@
 /* BlogAuth V1 tests/setup.js — Global Test Setup & DB Coordinator */
 const mongoose = require('mongoose');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-// Point to test database on Atlas to avoid polluting development collections
-const testMongoUri = 'mongodb+srv://upadhyayshourya352_dbuser:shouryaprojectPlacement0718@suplacement.qfdxoap.mongodb.net/blogAuth_test';
+// Construct test database URI dynamically from dev URI to avoid hardcoding credentials
+const devUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/blogAuth';
+const testMongoUri = process.env.MONGO_URI_TEST || 
+  (devUri.includes('?') 
+    ? devUri.replace(/\/blogAuth\?/, '/blogAuth_test?') 
+    : devUri.replace(/\/blogAuth$/, '/blogAuth_test')
+  );
 
 beforeAll(async () => {
   process.env.MONGO_URI = testMongoUri;

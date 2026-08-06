@@ -21,7 +21,11 @@ function signAccessToken(user) {
  */
 function signRefreshToken(user) {
   return jwt.sign(
-    { id: user._id, email: user.email },
+    { 
+      id: user._id, 
+      email: user.email,
+      jti: crypto.randomUUID()
+    },
     process.env.JWT_SECRET,
     { expiresIn: '7d' }
   );
